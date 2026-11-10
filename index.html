@@ -135,7 +135,6 @@
             display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
         }
         
-        /* Уменьшили заголовок, чтобы не разваливался на 3 строки */
         .location-info h2 { 
             font-family: 'Montserrat', sans-serif; 
             font-size: clamp(26px, 3.5vw, 32px); 
@@ -490,10 +489,9 @@
                 </div>
             </div>
 
-            <!-- 7. Милкшейки и Допы -->
+            <!-- 7. Милкшейки (Отдельная плашка) -->
             <div class="menu-category">
-                <h3>Милкшейки / Допы</h3>
-                <div class="menu-subtitle">Милкшейки</div>
+                <h3>Милкшейки</h3>
                 <div class="menu-item">
                     <span class="item-name">Милкшейк Орео</span>
                     <span class="item-price">390 ₽</span>
@@ -506,8 +504,11 @@
                     <span class="item-name">Милкшейк Классический</span>
                     <span class="item-price">390 ₽</span>
                 </div>
+            </div>
 
-                <div class="menu-subtitle">Допы</div>
+            <!-- 8. Допы (Отдельная плашка) -->
+            <div class="menu-category">
+                <h3>Допы</h3>
                 <div class="menu-item">
                     <span class="item-name">Сироп</span>
                     <span class="item-price">+30 ₽</span>
@@ -524,10 +525,12 @@
     <section class="container" id="location">
         <div class="location-section">
             <div class="location-info">
-                <!-- Обновили заголовок и посыл -->
+                <!-- Правка: текст про 4 выход -->
                 <h2>Мы у метро «Народное Ополчение»</h2>
-                <p>Мы находимся прямо у одного из 4 выходов. По пути на работу или учебу забегай за быстрым кофе, а на прогулке или по дороге домой — за любимым напитком.</p>
+                <p>Мы находимся справа от 4 выхода из метро. По пути на работу или учебу забегай за быстрым кофе, а на прогулке или по дороге домой — за любимым напитком.</p>
                 
+                <!-- Правка: Добавлен заголовок -->
+                <div style="font-weight: 800; margin-bottom: 10px; color: #fff;">График работы</div>
                 <div class="schedule">
                     <div><span>Будни:</span> с 7:00 до 22:00</div>
                     <div><span>Выходные:</span> с 8:00 до 21:00</div>
@@ -579,9 +582,11 @@
                     <span id="userPoints">150</span>
                     <small>баллов</small>
                 </div>
-                <p class="qr-hint">Покажи этот QR-код баристе, чтобы получить баллы</p>
+                <!-- Правка: бариста -->
+                <p class="qr-hint">Покажи этот QR-код бариста, чтобы получить баллы</p>
                 <div id="qrcode"></div>
-                <button class="btn" style="background: transparent; border: 1px solid white; margin-top: 15px;" onclick="logout()">Выйти</button>
+                <!-- Правка: Выйти теперь просто закрывает окно -->
+                <button class="btn" style="background: transparent; border: 1px solid white; margin-top: 15px;" onclick="closeProfile()">Выйти</button>
             </div>
         </div>
     </div>
@@ -667,6 +672,12 @@
             });
         }
 
+        // Правка: функция для кнопки "Выйти" (просто закрывает модалку)
+        function closeProfile() {
+            authModal.classList.remove('active');
+        }
+
+        // Старая функция logout() оставлена на всякий случай, но к кнопке больше не привязана
         function logout() {
             isLoggedIn = false;
             openAuthBtn.textContent = 'Личный кабинет';
