@@ -277,7 +277,7 @@
                 </div>
             </div>
 
-            <!-- 2. Авторские -->
+            <!-- 2. Авторские (ДОБАВЛЕН ОБЪЕМ 400 МЛ) -->
             <div class="menu-category">
                 <h3>Авторские напитки</h3>
                 <div class="menu-item">
@@ -285,23 +285,23 @@
                     <span class="item-price">150 ₽</span>
                 </div>
                 <div class="menu-item">
-                    <span class="item-name">Матча Малиновый Поцелуй</span>
+                    <span class="item-name">Матча Малиновый Поцелуй <span class="item-desc">400 мл</span></span>
                     <span class="item-price">310 ₽</span>
                 </div>
                 <div class="menu-item">
-                    <span class="item-name">Капучино Баунти</span>
+                    <span class="item-name">Капучино Баунти <span class="item-desc">400 мл</span></span>
                     <span class="item-price">320 ₽</span>
                 </div>
                 <div class="menu-item">
-                    <span class="item-name">Раф Вкус Детства</span>
+                    <span class="item-name">Раф Вкус Детства <span class="item-desc">400 мл</span></span>
                     <span class="item-price">320 ₽</span>
                 </div>
                 <div class="menu-item">
-                    <span class="item-name">Арахисовый Раф</span>
+                    <span class="item-name">Арахисовый Раф <span class="item-desc">400 мл</span></span>
                     <span class="item-price">320 ₽</span>
                 </div>
                 <div class="menu-item">
-                    <span class="item-name">Раф Халва</span>
+                    <span class="item-name">Раф Халва <span class="item-desc">400 мл</span></span>
                     <span class="item-price">320 ₽</span>
                 </div>
             </div>
@@ -525,11 +525,9 @@
     <section class="container" id="location">
         <div class="location-section">
             <div class="location-info">
-                <!-- Правка: текст про 4 выход -->
                 <h2>Мы у метро «Народное Ополчение»</h2>
                 <p>Мы находимся справа от 4 выхода из метро. По пути на работу или учебу забегай за быстрым кофе, а на прогулке или по дороге домой — за любимым напитком.</p>
                 
-                <!-- Правка: Добавлен заголовок -->
                 <div style="font-weight: 800; margin-bottom: 10px; color: #fff;">График работы</div>
                 <div class="schedule">
                     <div><span>Будни:</span> с 7:00 до 22:00</div>
@@ -582,10 +580,8 @@
                     <span id="userPoints">150</span>
                     <small>баллов</small>
                 </div>
-                <!-- Правка: бариста -->
                 <p class="qr-hint">Покажи этот QR-код бариста, чтобы получить баллы</p>
                 <div id="qrcode"></div>
-                <!-- Правка: Выйти теперь просто закрывает окно -->
                 <button class="btn" style="background: transparent; border: 1px solid white; margin-top: 15px;" onclick="closeProfile()">Выйти</button>
             </div>
         </div>
@@ -672,12 +668,10 @@
             });
         }
 
-        // Правка: функция для кнопки "Выйти" (просто закрывает модалку)
         function closeProfile() {
             authModal.classList.remove('active');
         }
 
-        // Старая функция logout() оставлена на всякий случай, но к кнопке больше не привязана
         function logout() {
             isLoggedIn = false;
             openAuthBtn.textContent = 'Личный кабинет';
