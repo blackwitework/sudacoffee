@@ -436,11 +436,11 @@
                 </div>
                 <form id="loginForm" onsubmit="handleAuth(event)">
                     <div class="input-group">
-                        <!-- Добавлен maxlength для ограничения ввода -->
                         <input type="tel" id="phoneInput" placeholder="Номер телефона" maxlength="18" required>
                     </div>
                     <div class="input-group" id="nameGroup" style="display: none;">
-                        <input type="text" id="nameInput" placeholder="Как вас зовут?" required>
+                        <!-- УБРАН required У ЭТОГО ПОЛЯ -->
+                        <input type="text" id="nameInput" placeholder="Как вас зовут?">
                     </div>
                     <div class="input-group">
                         <input type="password" id="passInput" placeholder="Пароль" required>
@@ -506,7 +506,6 @@
             
             <div id="adminWork" style="display: none;">
                 <div class="admin-search">
-                    <!-- Добавлен maxlength для поиска в админке -->
                     <input type="tel" id="searchPhone" placeholder="Номер гостя" maxlength="18">
                     <button onclick="findUser()">Найти</button>
                 </div>
@@ -593,7 +592,6 @@
             e.preventDefault();
             const phone = document.getElementById('phoneInput').value.replace(/\D/g, '');
             
-            // === НОВАЯ ПРОВЕРКА: Номер должен быть из 11 цифр ===
             if (phone.length !== 11) {
                 return alert("Пожалуйста, введите корректный номер телефона (11 цифр). Например: 79991112233");
             }
@@ -609,7 +607,7 @@
                 currentName = db[phone].name || 'Гость';
             } else {
                 if (db[phone]) return alert("Этот номер уже зарегистрирован. Войдите.");
-                if (!nameVal) return alert("Введите ваше имя!");
+                if (!nameVal) return alert("Введите ваше имя!"); // Проверка имени работает через JS
                 db[phone] = { password: pass, name: nameVal, cups: 0, streak: 0 };
                 saveDB(db);
                 currentPhone = phone;
@@ -710,7 +708,6 @@
         function findUser() {
             const phone = document.getElementById('searchPhone').value.replace(/\D/g, '');
             
-            // Проверка для админки
             if (phone.length !== 11) {
                 return alert("Введите 11 цифр номера.");
             }
