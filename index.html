@@ -439,11 +439,11 @@
                         <input type="tel" id="phoneInput" placeholder="Номер телефона" maxlength="18" required>
                     </div>
                     <div class="input-group" id="nameGroup" style="display: none;">
-                        <!-- УБРАН required У ЭТОГО ПОЛЯ -->
                         <input type="text" id="nameInput" placeholder="Как вас зовут?">
                     </div>
                     <div class="input-group">
-                        <input type="password" id="passInput" placeholder="Пароль" required>
+                        <!-- Добавлен minlength="4" -->
+                        <input type="password" id="passInput" placeholder="Пароль (мин. 4 символа)" minlength="4" required>
                     </div>
                     <button type="submit" class="btn" id="submitBtn">Войти</button>
                 </form>
@@ -597,6 +597,12 @@
             }
 
             const pass = document.getElementById('passInput').value;
+            
+            // === НОВАЯ ПРОВЕРКА: Пароль минимум 4 символа ===
+            if (pass.length < 4) {
+                return alert("Пароль должен содержать минимум 4 символа.");
+            }
+
             const nameVal = document.getElementById('nameInput').value.trim();
             const db = getDB();
 
@@ -607,7 +613,7 @@
                 currentName = db[phone].name || 'Гость';
             } else {
                 if (db[phone]) return alert("Этот номер уже зарегистрирован. Войдите.");
-                if (!nameVal) return alert("Введите ваше имя!"); // Проверка имени работает через JS
+                if (!nameVal) return alert("Введите ваше имя!");
                 db[phone] = { password: pass, name: nameVal, cups: 0, streak: 0 };
                 saveDB(db);
                 currentPhone = phone;
