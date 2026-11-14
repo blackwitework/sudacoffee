@@ -193,8 +193,8 @@
             font-family: 'Courier New', Courier, monospace;
             font-size: 26px;
             font-weight: 900;
-            color: var(--accent);
-            letter-spacing: 3px;
+            color: #ffffff; /* Сделали белым */
+            letter-spacing: 4px; /* Немного увеличили расстояние для красоты */
         }
 
         /* ===== ADMIN PANEL ===== */
@@ -480,7 +480,7 @@
                     
                     <!-- Блок с резервным коротким кодом -->
                     <div class="fallback-code-block">
-                        <div class="fallback-label">Если QR не считывается, продиктуйте код:</div>
+                        <div class="fallback-label">Ваш уникальный код:</div>
                         <div class="fallback-code" id="fallbackCode">000000</div>
                     </div>
 
@@ -534,7 +534,6 @@
             
             <div id="adminWork" style="display: none;">
                 <div class="admin-search">
-                    <!-- Обновлен плейсхолдер -->
                     <input type="text" id="searchPhone" placeholder="Номер (11 цифр) или Код (6 цифр)" maxlength="18">
                     <button onclick="findUser()">Найти</button>
                 </div>
