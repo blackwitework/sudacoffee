@@ -172,8 +172,30 @@
         .free-drink h4 { color: var(--text); font-family: 'Montserrat', sans-serif; font-size: 18px; margin-bottom: 4px; font-weight: 900; }
         .free-drink p { color: var(--text-muted); font-size: 13px; }
 
-        #qrcode { display: flex; justify-content: center; margin: 20px auto; background: white; padding: 15px; border-radius: 16px; width: fit-content; }
-        .qr-hint { color: var(--text-muted); font-size: 13px; margin-bottom: 15px; }
+        #qrcode { display: flex; justify-content: center; margin: 20px auto 10px; background: white; padding: 15px; border-radius: 16px; width: fit-content; }
+        
+        /* === СТИЛИ ДЛЯ РЕЗЕРВНОГО КОДА === */
+        .fallback-code-block {
+            background: rgba(255,255,255,0.03);
+            border: 1px dashed rgba(138, 43, 226, 0.5);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .fallback-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .fallback-code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--accent);
+            letter-spacing: 3px;
+        }
 
         /* ===== ADMIN PANEL ===== */
         .admin-panel { text-align: left; }
@@ -442,8 +464,7 @@
                         <input type="text" id="nameInput" placeholder="Как вас зовут?">
                     </div>
                     <div class="input-group">
-                        <!-- Добавлен minlength="4" -->
-                        <input type="password" id="passInput" placeholder="Пароль (мин. 4 символа)" minlength="4" required>
+                        <input type="password" id="passInput" placeholder="Пароль" required>
                     </div>
                     <button type="submit" class="btn" id="submitBtn">Войти</button>
                 </form>
@@ -452,11 +473,18 @@
             <!-- ЭКРАН ПОСЛЕ ВХОДА -->
             <div id="dashboardSection" class="dashboard-content">
                 
-                <!-- ВИД 1: МОЯ ЛОЯЛЬНОСТЬ (Только QR) -->
+                <!-- ВИД 1: МОЯ ЛОЯЛЬНОСТЬ (QR-код и короткий код) -->
                 <div id="loyaltyView" style="display: none;">
                     <h2 style="margin-bottom: 20px;">Твой QR-код</h2>
                     <div id="qrcode"></div>
-                    <p class="qr-hint" style="margin-top: 20px;">Покажи этот QR-код бариста, чтобы отметить покупку</p>
+                    
+                    <!-- Блок с резервным коротким кодом -->
+                    <div class="fallback-code-block">
+                        <div class="fallback-label">Если QR не считывается, продиктуйте код:</div>
+                        <div class="fallback-code" id="fallbackCode">000000</div>
+                    </div>
+
+                    <p class="qr-hint" style="margin-top: 5px;">Покажи QR или назови код бариста</p>
                 </div>
 
                 <!-- ВИД 2: ПРОФИЛЬ (Только баланс и выход) -->
@@ -506,7 +534,8 @@
             
             <div id="adminWork" style="display: none;">
                 <div class="admin-search">
-                    <input type="tel" id="searchPhone" placeholder="Номер гостя" maxlength="18">
+                    <!-- Обновлен плейсхолдер -->
+                    <input type="text" id="searchPhone" placeholder="Номер (11 цифр) или Код (6 цифр)" maxlength="18">
                     <button onclick="findUser()">Найти</button>
                 </div>
                 
@@ -531,15 +560,28 @@
     </div>
 
     <script>
+        // Инициализация базы (теперь с shortCode)
         if (!localStorage.getItem('sudacoffee_db')) {
             const initialDB = {
-                "79991112233": { password: "123", name: "Иван", cups: 2, streak: 1 }
+                "79991112233": { password: "123", name: "Иван", cups: 2, streak: 1, shortCode: "123456" }
             };
             localStorage.setItem('sudacoffee_db', JSON.stringify(initialDB));
         }
 
         function getDB() { return JSON.parse(localStorage.getItem('sudacoffee_db')); }
         function saveDB(db) { localStorage.setItem('sudacoffee_db', JSON.stringify(db)); }
+
+        // Функция генерации уникального 6-значного кода
+        function generateUniqueShortCode(db) {
+            let code;
+            let isUnique = false;
+            while (!isUnique) {
+                code = Math.floor(100000 + Math.random() * 900000).toString(); // 6 цифр
+                // Проверяем, нет ли такого кода у других пользователей
+                isUnique = !Object.values(db).some(user => user.shortCode === code);
+            }
+            return code;
+        }
 
         const authModal = document.getElementById('authModal');
         const openAuthBtn = document.getElementById('openAuth');
@@ -597,12 +639,6 @@
             }
 
             const pass = document.getElementById('passInput').value;
-            
-            // === НОВАЯ ПРОВЕРКА: Пароль минимум 4 символа ===
-            if (pass.length < 4) {
-                return alert("Пароль должен содержать минимум 4 символа.");
-            }
-
             const nameVal = document.getElementById('nameInput').value.trim();
             const db = getDB();
 
@@ -611,10 +647,23 @@
                 if (db[phone].password !== pass) return alert("Неверный пароль!");
                 currentPhone = phone;
                 currentName = db[phone].name || 'Гость';
+
+                // Если у старого пользователя нет короткого кода - генерируем
+                if (!db[phone].shortCode) {
+                    db[phone].shortCode = generateUniqueShortCode(db);
+                    saveDB(db);
+                }
             } else {
+                if (pass.length < 4) {
+                    return alert("Пароль должен содержать минимум 4 символа.");
+                }
                 if (db[phone]) return alert("Этот номер уже зарегистрирован. Войдите.");
                 if (!nameVal) return alert("Введите ваше имя!");
-                db[phone] = { password: pass, name: nameVal, cups: 0, streak: 0 };
+                
+                // Генерируем уникальный код при регистрации
+                const newShortCode = generateUniqueShortCode(db);
+                
+                db[phone] = { password: pass, name: nameVal, cups: 0, streak: 0, shortCode: newShortCode };
                 saveDB(db);
                 currentPhone = phone;
                 currentName = nameVal;
@@ -644,6 +693,9 @@
                     text: currentPhone, width: 160, height: 160,
                     colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H
                 });
+
+                // Выводим короткий код вместо номера телефона
+                document.getElementById('fallbackCode').textContent = user.shortCode || '000000';
             } else {
                 document.getElementById('loyaltyView').style.display = 'none';
                 document.getElementById('profileView').style.display = 'block';
@@ -711,22 +763,32 @@
 
         let searchedPhone = null;
 
+        // Поиск по номеру ИЛИ по короткому коду
         function findUser() {
-            const phone = document.getElementById('searchPhone').value.replace(/\D/g, '');
-            
-            if (phone.length !== 11) {
-                return alert("Введите 11 цифр номера.");
+            const inputVal = document.getElementById('searchPhone').value.trim().replace(/\D/g, '');
+            const db = getDB();
+            let foundPhone = null;
+
+            if (inputVal.length === 11) {
+                // Поиск по номеру телефона
+                if (db[inputVal]) foundPhone = inputVal;
+            } else if (inputVal.length === 6) {
+                // Поиск по короткому коду
+                for (const phone in db) {
+                    if (db[phone].shortCode === inputVal) {
+                        foundPhone = phone;
+                        break;
+                    }
+                }
             }
 
-            const db = getDB();
-            
-            if (db[phone]) {
-                searchedPhone = phone;
+            if (foundPhone) {
+                searchedPhone = foundPhone;
                 document.getElementById('userInfo').classList.add('active');
-                document.getElementById('guestPhone').textContent = formatPhone(phone) + ' (' + (db[phone].name || 'Без имени') + ')';
+                document.getElementById('guestPhone').textContent = formatPhone(foundPhone) + ' (' + (db[foundPhone].name || 'Без имени') + ')';
                 updateAdminUI();
             } else {
-                alert('Гость не найден!');
+                alert('Гость не найден! Проверьте номер (11 цифр) или код (6 цифр).');
                 document.getElementById('userInfo').classList.remove('active');
             }
         }
