@@ -260,7 +260,7 @@
             <div class="features">
                 <div class="feature-card">
                     <h3>Лояльность</h3>
-                    <p><b>Как работает:</b> Покупай любые напитки от 300 мл и показывай QR-код бариста. Собери 7 стаканчиков — и получи 8-й кофе в подарок! А еще зажигай огонёк: совершай у нас покупки 4 дня подряд, и на 5-й день получай бесплатно: доп. сироп, шот или альтернативное молоко.</p>
+                    <p><b>Как работает:</b> Покупай любые напитки от 300 мл и показывай QR-код бариста. Собери 7 стаканчиков — и получи 8-й кофе в подарок! А еще зажигай огонёк: совершай у нас покупки 4 дня подряд, и на 5-й день получай случайный бонус: сироп, доп. шот или альтернативное молоко.</p>
                 </div>
             </div>
         </div>
@@ -507,6 +507,12 @@
                         </div>
                     </div>
 
+                    <!-- Блок с выпавшим рандомным бонусом -->
+                    <div class="free-drink" id="streakRewardBlock" style="border-color: var(--fire); background: rgba(255, 123, 0, 0.1);">
+                        <h4 style="color: var(--fire);">Огонёк разгорелся!</h4>
+                        <p>Твой бонус: <b id="streakRewardText" style="color: #fff;"></b></p>
+                    </div>
+
                     <div class="free-drink" id="freeDrinkBlock">
                         <h4>Доступен бесплатный напиток</h4>
                         <p>Ты собрал 7 стаканчиков. Просто покажи этот экран бариста.</p>
@@ -547,6 +553,11 @@
                         <div>Стрик: <b id="guestStreak" style="color: var(--fire);">0</b> / 4</div>
                     </div>
                     
+                    <!-- Информация для баристы о выпавшем бонусе -->
+                    <div id="adminStreakReward" style="display: none; margin-bottom: 15px; font-size: 15px; color: var(--fire);">
+                        Бонус за огонек: <b id="adminRewardText" style="color: #fff;"></b>
+                    </div>
+                    
                     <div class="admin-btn-group">
                         <button class="btn-add-cup" onclick="addCup()">+1 Чашка</button>
                         <button class="btn-add-streak" onclick="addStreak()">+1 День (Стрик)</button>
@@ -559,10 +570,10 @@
     </div>
 
     <script>
-        // Инициализация базы (теперь с shortCode)
+        // Инициализация базы (теперь с shortCode и streakReward)
         if (!localStorage.getItem('sudacoffee_db')) {
             const initialDB = {
-                "79991112233": { password: "123", name: "Иван", cups: 2, streak: 1, shortCode: "123456" }
+                "79991112233": { password: "123", name: "Иван", cups: 2, streak: 1, shortCode: "123456", streakReward: null }
             };
             localStorage.setItem('sudacoffee_db', JSON.stringify(initialDB));
         }
@@ -576,10 +587,17 @@
             let isUnique = false;
             while (!isUnique) {
                 code = Math.floor(100000 + Math.random() * 900000).toString(); // 6 цифр
-                // Проверяем, нет ли такого кода у других пользователей
                 isUnique = !Object.values(db).some(user => user.shortCode === code);
             }
             return code;
+        }
+
+        // Рандомайзер бонусов за стрик (Сироп 50%, Шот 30%, Молоко 20%)
+        function getRandomStreakReward() {
+            const rand = Math.random();
+            if (rand < 0.5) return "Сироп (любой)";
+            if (rand < 0.8) return "Дополнительный шот";
+            return "Альтернативное молоко";
         }
 
         const authModal = document.getElementById('authModal');
@@ -647,9 +665,14 @@
                 currentPhone = phone;
                 currentName = db[phone].name || 'Гость';
 
-                // Если у старого пользователя нет короткого кода - генерируем
+                // Миграция для старых пользователей (добавляем shortCode, если его нет)
                 if (!db[phone].shortCode) {
                     db[phone].shortCode = generateUniqueShortCode(db);
+                    saveDB(db);
+                }
+                // Если у пользователя уже 4 стрика, но нет бонуса, генерируем его
+                if (db[phone].streak >= 4 && !db[phone].streakReward) {
+                    db[phone].streakReward = getRandomStreakReward();
                     saveDB(db);
                 }
             } else {
@@ -659,10 +682,9 @@
                 if (db[phone]) return alert("Этот номер уже зарегистрирован. Войдите.");
                 if (!nameVal) return alert("Введите ваше имя!");
                 
-                // Генерируем уникальный код при регистрации
                 const newShortCode = generateUniqueShortCode(db);
                 
-                db[phone] = { password: pass, name: nameVal, cups: 0, streak: 0, shortCode: newShortCode };
+                db[phone] = { password: pass, name: nameVal, cups: 0, streak: 0, shortCode: newShortCode, streakReward: null };
                 saveDB(db);
                 currentPhone = phone;
                 currentName = nameVal;
@@ -693,7 +715,6 @@
                     colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H
                 });
 
-                // Выводим короткий код вместо номера телефона
                 document.getElementById('fallbackCode').textContent = user.shortCode || '000000';
             } else {
                 document.getElementById('loyaltyView').style.display = 'none';
@@ -714,6 +735,16 @@
                 document.getElementById('flame4').classList.toggle('active', user.streak >= 4);
                 document.getElementById('streakText').textContent = `${user.streak}/4`;
 
+                // Отображение блока с рандомным бонусом за стрик
+                const streakRewardBlock = document.getElementById('streakRewardBlock');
+                if (user.streak >= 4 && user.streakReward) {
+                    streakRewardBlock.classList.add('active');
+                    document.getElementById('streakRewardText').textContent = user.streakReward;
+                } else {
+                    streakRewardBlock.classList.remove('active');
+                }
+
+                // Отображение блока с бесплатным напитком (чашки)
                 const freeDrinkBlock = document.getElementById('freeDrinkBlock');
                 if (user.cups === 7) {
                     freeDrinkBlock.classList.add('active');
@@ -762,17 +793,14 @@
 
         let searchedPhone = null;
 
-        // Поиск по номеру ИЛИ по короткому коду
         function findUser() {
             const inputVal = document.getElementById('searchPhone').value.trim().replace(/\D/g, '');
             const db = getDB();
             let foundPhone = null;
 
             if (inputVal.length === 11) {
-                // Поиск по номеру телефона
                 if (db[inputVal]) foundPhone = inputVal;
             } else if (inputVal.length === 6) {
-                // Поиск по короткому коду
                 for (const phone in db) {
                     if (db[phone].shortCode === inputVal) {
                         foundPhone = phone;
@@ -798,6 +826,7 @@
             document.getElementById('guestCups').textContent = user.cups;
             document.getElementById('guestStreak').textContent = user.streak;
             
+            // Кнопка списания бесплатного кофе (7 чашек)
             const redeemBtn = document.getElementById('redeemBtn');
             if (user.cups === 7) {
                 redeemBtn.style.display = 'block';
@@ -805,11 +834,21 @@
                 redeemBtn.style.display = 'none';
             }
 
+            // Кнопка списания бонуса за стрик (4 дня)
             const redeemStreakBtn = document.getElementById('redeemStreakBtn');
+            const adminStreakReward = document.getElementById('adminStreakReward');
+            
             if (user.streak >= 4) {
                 redeemStreakBtn.style.display = 'block';
+                if (user.streakReward) {
+                    adminStreakReward.style.display = 'block';
+                    document.getElementById('adminRewardText').textContent = user.streakReward;
+                } else {
+                    adminStreakReward.style.display = 'none';
+                }
             } else {
                 redeemStreakBtn.style.display = 'none';
+                adminStreakReward.style.display = 'none';
             }
         }
 
@@ -826,7 +865,7 @@
             user.cups += 1;
             
             if (user.cups === 7) {
-                alert('Гость собрал 7 чашек! Теперь ему доступен бесплатный напиток. Нажмите "Списать бесплатный", когда будете отдавать кофе.');
+                alert('Гость собрал 7 чашек! Теперь ему доступен бесплатный напиток.');
             }
             
             saveDB(db);
@@ -847,7 +886,9 @@
             user.streak += 1;
             
             if (user.streak === 4) {
-                alert('Гость приходил 4 дня подряд! Теперь ему доступен бонус. Нажмите "Списать бонус (Стрик)" при выдаче.');
+                // Генерируем случайный бонус
+                user.streakReward = getRandomStreakReward();
+                alert(`Гость приходил 4 дня подряд! Выпал бонус: ${user.streakReward}. Нажмите "Списать бонус (Стрик)" при выдаче.`);
             }
             
             saveDB(db);
@@ -878,6 +919,7 @@
             
             if (user.streak >= 4) {
                 user.streak = 0;
+                user.streakReward = null; // Сбрасываем бонус
                 saveDB(db);
                 updateAdminUI();
                 if (currentPhone === searchedPhone) showDashboard();
