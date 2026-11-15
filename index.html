@@ -193,8 +193,8 @@
             font-family: 'Courier New', Courier, monospace;
             font-size: 26px;
             font-weight: 900;
-            color: #ffffff; /* Сделали белым */
-            letter-spacing: 4px; /* Немного увеличили расстояние для красоты */
+            color: #ffffff; 
+            letter-spacing: 4px; 
         }
 
         /* ===== ADMIN PANEL ===== */
@@ -260,7 +260,7 @@
             <div class="features">
                 <div class="feature-card">
                     <h3>Лояльность</h3>
-                    <p><b>Как работает:</b> Покупай любые напитки от 300 мл и показывай QR-код бариста. Собери 7 стаканчиков — и получи 8-й кофе в подарок! А еще зажигай огонёк: совершай у нас покупки 4 дня подряд, и на 5-й день получай случайный бонус: сироп, доп. шот или альтернативное молоко.</p>
+                    <p><b>Как работает:</b> Покупайте любые напитки от 300 мл и показывайте QR-код бариста. Соберите 7 стаканчиков — и получите 8-й кофе в подарок! А еще зажигайте огонёк: совершайте у нас покупки 4 дня подряд, и на 5-й день получайте случайный бонус: сироп, доп. шот или альтернативное молоко.</p>
                 </div>
             </div>
         </div>
@@ -475,7 +475,7 @@
                 
                 <!-- ВИД 1: МОЯ ЛОЯЛЬНОСТЬ (QR-код и короткий код) -->
                 <div id="loyaltyView" style="display: none;">
-                    <h2 style="margin-bottom: 20px;">Твой QR-код</h2>
+                    <h2 style="margin-bottom: 20px;">Ваш QR-код</h2>
                     <div id="qrcode"></div>
                     
                     <!-- Блок с резервным коротким кодом -->
@@ -484,12 +484,12 @@
                         <div class="fallback-code" id="fallbackCode">000000</div>
                     </div>
 
-                    <p class="qr-hint" style="margin-top: 5px;">Покажи QR или назови код бариста</p>
+                    <p class="qr-hint" style="margin-top: 5px;">Покажите QR или назовите код бариста</p>
                 </div>
 
                 <!-- ВИД 2: ПРОФИЛЬ (Только баланс и выход) -->
                 <div id="profileView" style="display: none;">
-                    <h2 id="greetingTitle">Привет!</h2>
+                    <h2 id="greetingTitle">Здравствуйте!</h2>
                     
                     <div class="loyalty-section">
                         <div class="loyalty-title">8-й кофе в подарок!</div>
@@ -510,12 +510,12 @@
                     <!-- Блок с выпавшим рандомным бонусом -->
                     <div class="free-drink" id="streakRewardBlock" style="border-color: var(--fire); background: rgba(255, 123, 0, 0.1);">
                         <h4 style="color: var(--fire);">Огонёк разгорелся!</h4>
-                        <p>Твой бонус: <b id="streakRewardText" style="color: #fff;"></b></p>
+                        <p>Ваш бонус: <b id="streakRewardText" style="color: #fff;"></b></p>
                     </div>
 
                     <div class="free-drink" id="freeDrinkBlock">
                         <h4>Доступен бесплатный напиток</h4>
-                        <p>Ты собрал 7 стаканчиков. Просто покажи этот экран бариста.</p>
+                        <p>Вы собрали 7 стаканчиков. Просто покажите этот экран бариста.</p>
                     </div>
 
                     <button class="btn" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 15px; width: 100%;" onclick="logout()">Выйти из аккаунта</button>
@@ -720,7 +720,8 @@
                 document.getElementById('loyaltyView').style.display = 'none';
                 document.getElementById('profileView').style.display = 'block';
 
-                document.getElementById('greetingTitle').textContent = `Привет, ${currentName}!`;
+                // Обращение на "Вы"
+                document.getElementById('greetingTitle').textContent = `Здравствуйте, ${currentName}!`;
 
                 const cupsContainer = document.getElementById('cupsContainer');
                 cupsContainer.innerHTML = '';
@@ -826,7 +827,6 @@
             document.getElementById('guestCups').textContent = user.cups;
             document.getElementById('guestStreak').textContent = user.streak;
             
-            // Кнопка списания бесплатного кофе (7 чашек)
             const redeemBtn = document.getElementById('redeemBtn');
             if (user.cups === 7) {
                 redeemBtn.style.display = 'block';
@@ -834,7 +834,6 @@
                 redeemBtn.style.display = 'none';
             }
 
-            // Кнопка списания бонуса за стрик (4 дня)
             const redeemStreakBtn = document.getElementById('redeemStreakBtn');
             const adminStreakReward = document.getElementById('adminStreakReward');
             
@@ -886,7 +885,6 @@
             user.streak += 1;
             
             if (user.streak === 4) {
-                // Генерируем случайный бонус
                 user.streakReward = getRandomStreakReward();
                 alert(`Гость приходил 4 дня подряд! Выпал бонус: ${user.streakReward}. Нажмите "Списать бонус (Стрик)" при выдаче.`);
             }
@@ -919,7 +917,7 @@
             
             if (user.streak >= 4) {
                 user.streak = 0;
-                user.streakReward = null; // Сбрасываем бонус
+                user.streakReward = null; 
                 saveDB(db);
                 updateAdminUI();
                 if (currentPhone === searchedPhone) showDashboard();
