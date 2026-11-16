@@ -82,17 +82,32 @@
         .about-content p { color: var(--text-muted); font-size: 16px; line-height: 1.7; margin-bottom: 20px; }
         
         /* Обновленный блок статистики */
-        .about-stats { display: flex; gap: 30px; margin-top: 30px; flex-wrap: wrap; }
+        .about-stats { 
+            display: flex; 
+            flex-direction: row; 
+            flex-wrap: wrap; 
+            gap: 40px; 
+            margin-top: 35px; 
+        }
+        .stat-item { 
+            display: flex; 
+            align-items: baseline; 
+            gap: 12px; 
+            white-space: nowrap; /* Запрещает перенос внутри блока */
+        }
         .stat-item b { 
-            display: block; 
             font-family: 'Montserrat', sans-serif; 
             font-size: 32px; 
             font-weight: 900; 
             color: var(--accent); 
-            white-space: nowrap; /* Запрещает перенос строки (чтобы "4 выход" было вместе) */
-            margin-bottom: 5px;
+            line-height: 1;
         }
-        .stat-item span { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .stat-item span { 
+            font-size: 13px; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
         
         .about-image {
             background: linear-gradient(135deg, #2a1642 0%, #141414 100%);
@@ -234,6 +249,7 @@
         }
         @media (max-width: 768px) {
             .nav-links { display: none; }
+            .about-stats { flex-direction: column; gap: 20px; }
         }
     </style>
 </head>
@@ -404,15 +420,11 @@
                 <div class="about-stats">
                     <div class="stat-item">
                         <b>1 мин</b>
-                        <span>Приготовление</span>
-                    </div>
-                    <div class="stat-item">
-                        <b>100%</b>
-                        <span>Свежая обжарка</span>
+                        <span>Среднее время приготовления</span>
                     </div>
                     <div class="stat-item">
                         <b>4 выход</b>
-                        <span>Всегда на пути</span>
+                        <span>метро</span>
                     </div>
                 </div>
             </div>
