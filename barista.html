@@ -84,6 +84,8 @@
         .menu-category h3 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent); display: inline-block; }
         .menu-subtitle { font-size: 15px; font-weight: 800; color: var(--accent); text-transform: uppercase; margin: 25px 0 15px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; }
         .menu-subtitle:first-of-type { margin-top: 0; }
+        .badge-new { background-color: var(--new-red); color: white; font-size: 10px; font-weight: 900; font-family: 'Golos Text', sans-serif; padding: 2px 6px; border-radius: 4px; letter-spacing: 1px; text-transform: uppercase; animation: pulse-red 2s infinite; line-height: 1; }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(255, 71, 87, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); } }
         
         .menu-item { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
         .menu-item:last-child { border-bottom: none; }
@@ -148,7 +150,6 @@
         .btn-redeem:hover { background: #27ae60; }
         .btn-redeem-streak { background: var(--fire); color: white; grid-column: span 2; }
 
-        /* Блок управления персоналом */
         #ownerPanel { display: none; max-width: 700px; margin: 40px auto; background: var(--surface); border-radius: 24px; padding: 30px; border: 1px solid rgba(138, 43, 226, 0.5); text-align: left; }
         #ownerPanel h3 { font-family: 'Montserrat', sans-serif; font-size: 20px; color: var(--accent); margin-bottom: 15px; }
         .staff-list { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
@@ -187,7 +188,6 @@
 
         footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--text-muted); font-size: 14px; }
 
-        /* ===== АДАПТИВ ===== */
         @media (max-width: 900px) {
             .location-section, .about-section { grid-template-columns: 1fr; }
             .map-wrapper, .about-image { height: 300px; min-height: 300px; }
@@ -215,7 +215,6 @@
                 <!-- Ссылки меняются через JS -->
             </div>
             
-            <!-- Кнопки в шапке -->
             <button class="auth-btn" id="openAuth">Профиль</button>
             <button class="logout-btn" id="logoutAdmin" onclick="logout()">Завершить смену</button>
         </div>
@@ -243,11 +242,9 @@
             </div>
         </section>
 
-        <!-- МЕНЮ ГОСТЯ -->
         <section class="container" id="menu-guest">
             <h2 class="section-title">Наше <span>Меню</span></h2>
             <div class="menu-grid">
-                <!-- 1. Классика -->
                 <div class="menu-category">
                     <h3>Классика</h3>
                     <div class="menu-item"><span class="item-name">Эспрессо х2 <span class="item-desc">40 мл</span></span><span class="item-price">110 ₽</span></div>
@@ -259,8 +256,6 @@
                     <div class="menu-item"><span class="item-name">Бамбл горячий <span class="item-desc">300 / 400 мл</span></span><span class="item-price">320 / 350 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Моккачино <span class="item-desc">300 / 400 мл</span></span><span class="item-price">280 / 320 ₽</span></div>
                 </div>
-
-                <!-- 2. Авторские -->
                 <div class="menu-category">
                     <h3>Авторские напитки</h3>
                     <div class="menu-item"><span class="item-name">Еловый Экспресс <span class="item-desc">40 мл</span></span><span class="item-price">150 ₽</span></div>
@@ -270,8 +265,6 @@
                     <div class="menu-item"><span class="item-name">Арахисовый Раф <span class="item-desc">400 мл</span></span><span class="item-price">320 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Раф Халва <span class="item-desc">400 мл</span></span><span class="item-price">320 ₽</span></div>
                 </div>
-
-                <!-- 3. Освежающие -->
                 <div class="menu-category">
                     <h3>Освежающие</h3>
                     <div class="menu-item"><span class="item-name">Эспрессо-тоник Ментол <span class="item-desc">500 мл</span></span><span class="item-price">320 ₽</span></div>
@@ -282,8 +275,6 @@
                     <div class="menu-item"><span class="item-name">Матча-Тоник <span class="item-desc">500 мл</span></span><span class="item-price">320 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Айс Латте <span class="item-desc">500 мл</span></span><span class="item-price">290 ₽</span></div>
                 </div>
-
-                <!-- 4. Матча / Бамблы -->
                 <div class="menu-category">
                     <h3>Матча / Бамблы</h3>
                     <div class="menu-subtitle">Японские чаи</div>
@@ -292,15 +283,12 @@
                     <div class="menu-item"><span class="item-name">Матча Фиолетовая <span class="item-desc">300 / 400 мл</span></span><span class="item-price">250 / 270 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Матча Соленая Фисташка <span class="item-desc">300 / 400 мл</span></span><span class="item-price">270 / 310 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Айс Матча <span class="item-desc">500 мл</span></span><span class="item-price">290 ₽</span></div>
-                    
                     <div class="menu-subtitle">Айс бамблы</div>
                     <div class="menu-item"><span class="item-name">Айс Бамбл Классический <span class="item-desc">500 мл</span></span><span class="item-price">320 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Айс Бамбл Еловый <span class="item-desc">500 мл</span></span><span class="item-price">320 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Айс Матча Бамбл <span class="item-desc">500 мл</span></span><span class="item-price">320 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Айс Матча Бамбл Вишня <span class="item-desc">500 мл</span></span><span class="item-price">320 ₽</span></div>
                 </div>
-
-                <!-- 5. Сезонное -->
                 <div class="menu-category">
                     <h3>Сезонное</h3>
                     <div class="menu-subtitle">Осень</div>
@@ -310,7 +298,6 @@
                     <div class="menu-item"><span class="item-name">Раф пряный ром <span class="item-desc">300 / 400 мл</span></span><span class="item-price">330 / 360 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Еловый бамбл <span class="item-desc">300 / 400 мл</span></span><span class="item-price">280 / 320 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Латте кнолле <span class="item-desc">300 / 400 мл</span></span><span class="item-price">280 / 320 ₽</span></div>
-                    
                     <div class="menu-subtitle">Зима</div>
                     <div class="menu-item"><span class="item-name">Капучино клюква в шоколаде <span class="item-desc">300 / 400 мл</span></span><span class="item-price">280 / 320 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Латте мята-барбарис <span class="item-desc">300 / 400 мл</span></span><span class="item-price">280 / 320 ₽</span></div>
@@ -318,8 +305,6 @@
                     <div class="menu-item"><span class="item-name">Глинтвейн ягодный <span class="item-desc">300 / 400 мл</span></span><span class="item-price">270 / 310 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Клюквенный пунш <span class="item-desc">300 / 400 мл</span></span><span class="item-price">270 / 310 ₽</span></div>
                 </div>
-
-                <!-- 6. Чайная карта -->
                 <div class="menu-category">
                     <h3>Чайная карта</h3>
                     <div class="menu-subtitle">Ягодные чаи</div>
@@ -337,16 +322,12 @@
                     <div class="menu-item"><span class="item-name">Молочный улун <span class="item-desc">300 / 400 мл</span></span><span class="item-price">170 / 210 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Жасминовый чай <span class="item-desc">300 / 400 мл</span></span><span class="item-price">170 / 210 ₽</span></div>
                 </div>
-
-                <!-- 7. Милкшейки -->
                 <div class="menu-category">
                     <h3>Милкшейки</h3>
                     <div class="menu-item"><span class="item-name">Милкшейк Орео <span class="item-desc">500 мл</span></span><span class="item-price">390 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Милкшейк Медовик <span class="item-desc">500 мл</span></span><span class="item-price">390 ₽</span></div>
                     <div class="menu-item"><span class="item-name">Милкшейк Классический <span class="item-desc">500 мл</span></span><span class="item-price">390 ₽</span></div>
                 </div>
-
-                <!-- 8. Допы -->
                 <div class="menu-category">
                     <h3>Допы</h3>
                     <div class="menu-item"><span class="item-name">Сироп</span><span class="item-price">+30 ₽</span></div>
@@ -360,6 +341,10 @@
                 <div class="about-content">
                     <h2>Мы не просто <span>кофейня</span>.<br>Мы — ваш утренний ритуал.</h2>
                     <p>Мы знаем, как раздражает ждать, когда вы спешите по делам. Поэтому открылись прямо у метро и натренировали команду так, чтобы готовить ваш кофе с максимальной скоростью.</p>
+                    <p>Но скорость — не единственное. К каждому напитку мы относимся с искренней заботой о вкусе и качестве.</p>
+                    <p>Мы здесь для того, чтобы делать ваш день чуточку бодрее и вкуснее. Каждый раз, когда вы заходите к нам в гости.</p>
+                    <p>А еще мы любим, когда у вас появляется «свой» напиток. Наши бариста быстро запоминают постоянных гостей и их любимые сочетания — будь то конкретный сироп или альтернативное молоко. Мы всегда стараемся найти индивидуальный подход, чтобы вы чувствовали себя здесь как дома.</p>
+                    
                     <div class="about-stats">
                         <div class="stat-item"><b>1 мин</b><span>Среднее время<br>приготовления напитка</span></div>
                         <div class="stat-item"><b>4 выход<br>метро</b><span>Всегда по пути</span></div>
@@ -403,7 +388,6 @@
                 <h1>Панель <span>бариста</span></h1>
             </div>
 
-            <!-- Поиск клиента -->
             <div class="search-box">
                 <div class="input-row">
                     <input type="text" id="searchInput" placeholder="Номер телефона или 6-значный код" maxlength="18">
@@ -415,7 +399,6 @@
                 </button>
             </div>
 
-            <!-- Карточка клиента -->
             <div class="guest-card" id="guestCard">
                 <div class="guest-header">
                     <div class="guest-name" id="gName">Имя</div>
@@ -445,7 +428,6 @@
                 </div>
             </div>
 
-            <!-- Управление персоналом (Только для Владельца) -->
             <div id="ownerPanel">
                 <h3>Управление персоналом</h3>
                 <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Добавьте номер телефона сотрудника. Он сможет зайти через кнопку «Профиль» под своим паролем.</p>
@@ -466,10 +448,8 @@
                 </div>
             </div>
 
-            <!-- Шпаргалка меню (без цен) -->
             <h2 class="section-title" style="margin-top: 60px; text-align: center;">Шпаргалка <span>меню</span></h2>
             <div class="menu-grid-admin" id="menu-admin">
-                <!-- Классика -->
                 <div class="menu-category">
                     <h3>Классика</h3>
                     <div class="menu-item"><span class="item-name">Эспрессо х2 <span class="item-desc">40 мл</span></span></div>
@@ -482,7 +462,6 @@
                     <div class="menu-item"><span class="item-name">Моккачино <span class="item-desc">300 / 400 мл</span></span></div>
                 </div>
 
-                <!-- Авторские -->
                 <div class="menu-category">
                     <h3>Авторские напитки</h3>
                     <div class="menu-item"><span class="item-name">Еловый Экспресс <span class="item-desc">40 мл</span></span></div>
@@ -493,7 +472,6 @@
                     <div class="menu-item"><span class="item-name">Раф Халва <span class="item-desc">400 мл</span></span></div>
                 </div>
 
-                <!-- Освежающие -->
                 <div class="menu-category">
                     <h3>Освежающие</h3>
                     <div class="menu-item"><span class="item-name">Эспрессо-тоник Ментол <span class="item-desc">500 мл</span></span></div>
@@ -505,7 +483,6 @@
                     <div class="menu-item"><span class="item-name">Айс Латте <span class="item-desc">500 мл</span></span></div>
                 </div>
 
-                <!-- Матча / Бамблы -->
                 <div class="menu-category">
                     <h3>Матча / Бамблы</h3>
                     <div class="menu-subtitle">Японские чаи</div>
@@ -522,7 +499,6 @@
                     <div class="menu-item"><span class="item-name">Айс Матча Бамбл Вишня <span class="item-desc">500 мл</span></span></div>
                 </div>
 
-                <!-- Сезонное -->
                 <div class="menu-category">
                     <h3>Сезонное</h3>
                     <div class="menu-subtitle">Осень</div>
@@ -541,7 +517,6 @@
                     <div class="menu-item"><span class="item-name">Клюквенный пунш <span class="item-desc">300 / 400 мл</span></span></div>
                 </div>
 
-                <!-- Чайная карта -->
                 <div class="menu-category">
                     <h3>Чайная карта</h3>
                     <div class="menu-subtitle">Ягодные чаи</div>
@@ -560,7 +535,6 @@
                     <div class="menu-item"><span class="item-name">Жасминовый чай <span class="item-desc">300 / 400 мл</span></span></div>
                 </div>
 
-                <!-- Милкшейки -->
                 <div class="menu-category">
                     <h3>Милкшейки</h3>
                     <div class="menu-item"><span class="item-name">Милкшейк Орео <span class="item-desc">500 мл</span></span></div>
@@ -568,13 +542,11 @@
                     <div class="menu-item"><span class="item-name">Милкшейк Классический <span class="item-desc">500 мл</span></span></div>
                 </div>
 
-                <!-- СИРОПЫ -->
                 <div class="menu-category">
                     <h3>Сиропы</h3>
                     <div class="menu-item"><span class="item-name">Сироп (любой)</span></div>
                 </div>
 
-                <!-- ДОПЫ -->
                 <div class="menu-category">
                     <h3>Допы</h3>
                     <div class="menu-subtitle">Альтернативное молоко</div>
@@ -597,11 +569,7 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
     <!-- МОДАЛЬНЫЕ ОКНА -->
-    <!-- ========================================== -->
-    
-    <!-- Вход / Профиль -->
     <div class="modal" id="authModal">
         <div class="modal-content">
             <span class="close-btn" id="closeAuth">&times;</span>
@@ -659,7 +627,6 @@
         </div>
     </div>
 
-    <!-- Сканер -->
     <div class="scanner-modal" id="scannerModal">
         <div id="reader"></div>
         <button class="close-scanner" onclick="closeScanner()">Отмена</button>
@@ -667,20 +634,18 @@
 
     <script>
         // ==========================================
-        // БАЗА ДАННЫХ (ВЕРСИЯ 2, ЧТОБЫ СБРОСИТЬ СТАРЫЕ ОШИБКИ)
+        // БАЗА ДАННЫХ (ВЕРСИЯ 3)
         // ==========================================
-        if (!localStorage.getItem('sudacoffee_v2_db')) {
+        if (!localStorage.getItem('sudacoffee_v3_db')) {
             const initialDB = {
-                // Владелец
                 "79991112233": { password: "123", name: "Владелец", cups: 0, streak: 0, shortCode: "123456", streakReward: null, role: "owner" },
-                // Тестовый бариста
                 "79990001122": { password: "1111", name: "Аня", cups: 0, streak: 0, shortCode: "654321", streakReward: null, role: "barista" }
             };
-            localStorage.setItem('sudacoffee_v2_db', JSON.stringify(initialDB));
+            localStorage.setItem('sudacoffee_v3_db', JSON.stringify(initialDB));
         }
 
-        function getDB() { return JSON.parse(localStorage.getItem('sudacoffee_v2_db')); }
-        function saveDB(db) { localStorage.setItem('sudacoffee_v2_db', JSON.stringify(db)); }
+        function getDB() { return JSON.parse(localStorage.getItem('sudacoffee_v3_db')); }
+        function saveDB(db) { localStorage.setItem('sudacoffee_v3_db', JSON.stringify(db)); }
 
         // ==========================================
         // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
@@ -855,7 +820,7 @@
         }
 
         // ==========================================
-        // УПРАВЛЕНИЕ ПЕРСОНАЛОМ (ДЛЯ ВЛАДЕЛЬЦА)
+        // УПРАВЛЕНИЕ ПЕРСОНАЛОМ
         // ==========================================
         function addStaff() {
             if (currentRole !== 'owner') return;
@@ -1065,7 +1030,6 @@
             }
         }
 
-        // Инициализация интерфейса при загрузке
         updateUI('guest');
     </script>
 </body>
