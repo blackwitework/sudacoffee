@@ -6,7 +6,7 @@
     <title>СЮДА — Панель бариста</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Golos+Text:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Golos+Text:wght@400;600;800&family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -22,299 +22,198 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: 'Golos Text', sans-serif; 
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-        }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.5; overflow-x: hidden; font-family: 'Golos Text', sans-serif; }
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
-        .app-container {
-            width: 100%;
-            max-width: 500px; /* Ограничиваем ширину для удобства на планшетах */
+        /* ===== HEADER ===== */
+        header { position: fixed; top: 0; width: 100%; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .nav { display: flex; justify-content: space-between; align-items: center; height: 70px; }
+        
+        .logo-mini { display: flex; align-items: center; }
+        .logo-mini-img { height: 40px; width: auto; display: block; }
+        
+        .nav-links { display: flex; gap: 30px; font-weight: 600; font-size: 14px; }
+        .nav-links a:hover { color: var(--accent); transition: 0.2s; }
+        
+        .auth-btn { background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 8px 20px; border-radius: 50px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.3s; }
+        .auth-btn:hover { background: var(--danger); color: white; }
+
+        /* ===== HERO / STAFF PANEL ===== */
+        .staff-section { padding: 120px 0 80px; min-height: 100vh; }
+        
+        .page-title { font-family: 'Montserrat', sans-serif; font-size: 40px; font-weight: 900; text-align: center; margin-bottom: 40px; }
+        .page-title span { color: var(--accent); }
+
+        .search-box {
             background: var(--surface);
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: fit-content;
+            padding: 30px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* Шапка */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 15px;
-        }
-        .header h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 22px;
-            font-weight: 900;
-        }
-        .staff-info {
-            text-align: right;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-        .staff-info b {
-            color: var(--accent);
-            display: block;
-            font-size: 14px;
-        }
-        .logout-btn {
-            background: transparent;
-            border: 1px solid var(--danger);
-            color: var(--danger);
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: 0.2s;
-            margin-top: 5px;
-        }
-        .logout-btn:hover { background: var(--danger); color: white; }
-
-        /* Поиск */
-        .search-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .input-row {
-            display: flex;
-            gap: 10px;
-        }
+        .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
         .input-row input {
-            flex: 1;
-            padding: 15px;
-            background: var(--bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: white;
-            font-size: 16px;
-            outline: none;
+            flex: 1; padding: 18px; background: var(--bg);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            color: white; font-size: 16px; outline: none; font-family: 'Golos Text', sans-serif;
             transition: 0.3s;
-            font-family: 'Golos Text', sans-serif;
         }
         .input-row input:focus { border-color: var(--accent); }
         
         .btn-search {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 16px;
+            background: var(--accent); color: white; border: none;
+            padding: 0 30px; border-radius: 12px; font-weight: 800; cursor: pointer;
+            transition: 0.2s; font-size: 16px;
         }
         .btn-search:hover { background: var(--accent-hover); }
 
         .btn-scan {
-            background: rgba(138, 43, 226, 0.1);
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 16px;
-            transition: 0.2s;
+            width: 100%; background: rgba(138, 43, 226, 0.1); color: var(--accent);
+            border: 1px solid var(--accent); padding: 18px; border-radius: 12px;
+            font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            gap: 10px; font-size: 16px; transition: 0.2s;
         }
         .btn-scan:hover { background: var(--accent); color: white; }
 
-        /* Карточка гостя */
+        /* ===== GUEST CARD ===== */
         .guest-card {
-            display: none;
-            flex-direction: column;
-            gap: 15px;
+            display: none; flex-direction: column; gap: 20px;
+            max-width: 700px; margin: 0 auto;
+            background: var(--surface); padding: 30px;
+            border-radius: 24px; border: 1px solid rgba(138, 43, 226, 0.3);
             animation: fadeIn 0.3s ease;
         }
         .guest-card.active { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .guest-header { text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+        .guest-name { font-size: 28px; font-weight: 800; font-family: 'Montserrat', sans-serif; margin-bottom: 5px; }
+        .guest-details { font-size: 14px; color: var(--text-muted); font-family: monospace; }
 
-        .guest-header {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-        }
-        .guest-name { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-        .guest-details { font-size: 13px; color: var(--text-muted); font-family: monospace; }
-
-        /* Стаканчики и Огоньки */
-        .stats-block {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-        }
-        .stats-title { font-size: 14px; font-weight: 800; margin-bottom: 15px; color: #fff; }
+        .stats-block { background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 25px; text-align: center; }
+        .stats-title { font-size: 15px; font-weight: 800; margin-bottom: 15px; color: #fff; }
         
-        .cups-container { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-        .cup-icon { width: 32px; height: 32px; fill: rgba(255, 255, 255, 0.1); transition: 0.3s; }
+        .cups-container { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
+        .cup-icon { width: 35px; height: 35px; fill: rgba(255, 255, 255, 0.1); transition: 0.3s; }
         .cup-icon.filled { fill: var(--accent); filter: drop-shadow(0 0 5px rgba(138,43,226,0.5)); }
 
         .flame-container { display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .flame-icon { width: 32px; height: 32px; fill: #444; transition: 0.3s; }
+        .flame-icon { width: 35px; height: 35px; fill: #444; transition: 0.3s; }
         .flame-icon.active { fill: var(--fire); filter: drop-shadow(0 0 10px rgba(255,123,0,0.5)); }
-        .streak-text { font-weight: 800; font-size: 20px; color: #fff; margin-left: 10px; }
+        .streak-text { font-weight: 800; font-size: 22px; color: #fff; margin-left: 10px; }
 
-        /* Плашка с бонусом */
         .reward-notice {
-            display: none;
-            background: rgba(255, 123, 0, 0.1);
-            border: 1px solid var(--fire);
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
+            display: none; background: rgba(255, 123, 0, 0.1);
+            border: 1px solid var(--fire); border-radius: 12px; padding: 15px; text-align: center;
         }
         .reward-notice.active { display: block; }
         .reward-notice h4 { color: var(--fire); font-size: 16px; margin-bottom: 4px; }
-        .reward-notice p { font-size: 14px; color: #fff; }
+        .reward-notice p { font-size: 15px; color: #fff; }
 
-        /* Кнопки действий */
-        .action-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
+        .action-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .action-buttons button {
-            padding: 18px 10px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 800;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: 'Golos Text', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
+            padding: 20px 10px; border-radius: 16px; border: none;
+            font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.2s;
+            font-family: 'Golos Text', sans-serif; display: flex; justify-content: center; align-items: center;
         }
         .action-buttons button:active { transform: scale(0.98); }
         
         .btn-add-cup { background: var(--accent); color: white; grid-column: span 2; }
         .btn-add-cup:hover { background: var(--accent-hover); }
-        
         .btn-add-streak { background: var(--fire); color: white; }
         .btn-add-streak:hover { background: #ff922b; }
-
         .btn-redeem { background: var(--success); color: #000; grid-column: span 2; }
         .btn-redeem:hover { background: #27ae60; }
-        
         .btn-redeem-streak { background: var(--fire); color: white; grid-column: span 2; }
-        .btn-redeem-streak:hover { background: #ff922b; }
 
-        /* Модалка сканера */
-        .scanner-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            padding: 20px;
-        }
+        /* ===== MENU (Без цен, с сиропами) ===== */
+        .menu-section { padding: 60px 0 100px; background: var(--bg); }
+        .section-title { font-family: 'Montserrat', sans-serif; font-size: 40px; font-weight: 900; margin-bottom: 40px; text-transform: uppercase; letter-spacing: -1px; text-align: center; }
+        .section-title span { color: var(--accent); }
+        
+        .menu-grid { column-count: 2; column-gap: 30px; }
+        .menu-category { break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 30px; background: var(--surface); border-radius: 24px; padding: 30px; display: inline-block; width: 100%; border: 1px solid rgba(255,255,255,0.05); }
+        .menu-category h3 { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent); display: inline-block; }
+        
+        .menu-subtitle { font-size: 15px; font-weight: 800; color: var(--accent); text-transform: uppercase; margin: 25px 0 15px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; }
+        .menu-subtitle:first-of-type { margin-top: 0; }
+
+        .menu-item { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+        .menu-item:last-child { border-bottom: none; }
+        .item-name { font-size: 16px; font-weight: 600; line-height: 1.3; }
+        .item-desc { font-size: 13px; color: var(--text-muted); display: block; margin-top: 4px; font-weight: 400; }
+
+        /* Шрифт для меню */
+        #menu, #menu * { font-family: 'Onest', Arial, sans-serif; }
+
+        /* ===== MODAL SCANNER ===== */
+        .scanner-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
         .scanner-modal.active { display: flex; }
-        .scanner-box {
-            width: 100%;
-            max-width: 400px;
-            aspect-ratio: 1;
-            border: 2px dashed var(--accent);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
-        .scanner-box::before {
-            content: '';
-            position: absolute;
-            top: 10%; left: 10%; right: 10%; height: 2px;
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
-            animation: scan 2s infinite linear;
-        }
-        @keyframes scan {
-            0% { top: 10%; }
-            50% { top: 90%; }
-            100% { top: 10%; }
-        }
-        .close-scanner {
-            margin-top: 20px;
-            background: transparent;
-            color: white;
-            border: 1px solid white;
-            padding: 10px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-        }
+        .scanner-box { width: 100%; max-width: 400px; aspect-ratio: 1; border: 2px dashed var(--accent); border-radius: 24px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; padding: 20px; position: relative; overflow: hidden; }
+        .scanner-box::before { content: ''; position: absolute; top: 10%; left: 10%; right: 10%; height: 2px; background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: scan 2s infinite linear; }
+        @keyframes scan { 0% { top: 10%; } 50% { top: 90%; } 100% { top: 10%; } }
+        .close-scanner { margin-top: 30px; background: transparent; color: white; border: 1px solid white; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 16px; }
 
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 900px) {
+            .menu-grid { column-count: 1; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .page-title { font-size: 32px; }
+            .input-row { flex-direction: column; }
+            .btn-search { padding: 18px; }
+            .guest-header { padding-bottom: 15px; }
+            .guest-name { font-size: 24px; }
+            .action-buttons { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <!-- Шапка -->
-        <div class="header">
-            <h1>Панель бариста</h1>
-            <div class="staff-info">
-                Сотрудник:
-                <b>Аня</b>
-                <button class="logout-btn">Выйти</button>
+    <!-- ШАПКА -->
+    <header>
+        <div class="container nav">
+            <a href="#" class="logo-mini">
+                <img src="logo.png" alt="СЮДА" class="logo-mini-img">
+            </a>
+            <div class="nav-links">
+                <a href="#menu">Меню</a>
             </div>
+            <button class="auth-btn" onclick="alert('Выход из аккаунта бариста')">Выйти</button>
         </div>
+    </header>
 
-        <!-- Поиск -->
-        <div class="search-section">
+    <!-- ПАНЕЛЬ БАРИСТА -->
+    <section class="staff-section container">
+        <h1 class="page-title">Панель <span>бариста</span></h1>
+        
+        <div class="search-box">
             <div class="input-row">
-                <input type="text" id="searchInput" placeholder="Номер или 6-значный код" maxlength="18">
+                <input type="text" id="searchInput" placeholder="Номер телефона или 6-значный код" maxlength="18">
                 <button class="btn-search" onclick="searchGuest()">Найти</button>
             </div>
             <button class="btn-scan" onclick="openScanner()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10"></rect></svg>
-                Сканировать QR
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10"></rect></svg>
+                Сканировать QR-код гостя
             </button>
         </div>
 
-        <!-- Карточка гостя (скрыта по умолчанию) -->
+        <!-- КАРТОЧКА ГОСТЯ -->
         <div class="guest-card" id="guestCard">
-            
             <div class="guest-header">
-                <div class="guest-name" id="gName">Иван</div>
-                <div class="guest-details" id="gDetails">+7 999 111-22-33 • Код: 123456</div>
+                <div class="guest-name" id="gName">Имя гостя</div>
+                <div class="guest-details" id="gDetails">+7 ... • Код: ...</div>
             </div>
 
             <div class="stats-block">
                 <div class="stats-title">8-й кофе в подарок</div>
                 <div class="cups-container" id="cupsContainer"></div>
                 
-                <div class="stats-title" style="margin-top: 25px;">Огонёк (4 дня подряд)</div>
+                <div class="stats-title" style="margin-top: 30px;">Огонёк (4 дня подряд)</div>
                 <div class="flame-container">
                     <svg class="flame-icon" id="f1" viewBox="0 0 24 24"><path d="M12,23A9,9 0 0,1 7.16,6.66C8.32,8.15 9.21,9 10.5,10.5C10.5,10.5 12,8 12,4A10.85,10.85 0 0,1 15.72,7.67C17.17,10 18,12.5 18,15C18,19.42 14.88,23 12,23M12,10.5A4.5,4.5 0 0,0 9.87,14.34C9.55,15.16 9.32,16.07 9.32,17A2.68,2.68 0 0,0 12,19.68A2.68,2.68 0 0,0 14.68,17C14.68,15.5 14.08,14.16 13.13,13.18C13.13,13.18 12.83,14.26 11.34,14.26C10.58,14.26 9.89,13.6 9.55,12.82A4.57,4.57 0 0,1 12,10.5Z"/></svg>
                     <svg class="flame-icon" id="f2" viewBox="0 0 24 24"><path d="M12,23A9,9 0 0,1 7.16,6.66C8.32,8.15 9.21,9 10.5,10.5C10.5,10.5 12,8 12,4A10.85,10.85 0 0,1 15.72,7.67C17.17,10 18,12.5 18,15C18,19.42 14.88,23 12,23M12,10.5A4.5,4.5 0 0,0 9.87,14.34C9.55,15.16 9.32,16.07 9.32,17A2.68,2.68 0 0,0 12,19.68A2.68,2.68 0 0,0 14.68,17C14.68,15.5 14.08,14.16 13.13,13.18C13.13,13.18 12.83,14.26 11.34,14.26C10.58,14.26 9.89,13.6 9.55,12.82A4.57,4.57 0 0,1 12,10.5Z"/></svg>
@@ -324,64 +223,185 @@
                 </div>
             </div>
 
-            <!-- Плашка бонуса -->
             <div class="reward-notice" id="rewardNotice">
-                <h4>Сгорел стрик!</h4>
-                <p>Доступен бонус: <b id="gRewardText">Сироп</b></p>
+                <h4>Огонёк разгорелся!</h4>
+                <p>Бонус: <b id="gRewardText">Сироп</b></p>
             </div>
 
-            <!-- Кнопки -->
             <div class="action-buttons">
                 <button class="btn-add-cup" onclick="addCup()">+1 Чашка</button>
                 <button class="btn-add-streak" onclick="addStreak()">+1 День</button>
-                
                 <button class="btn-redeem" id="btnRedeemCup" style="display: none;" onclick="redeemCup()">Списать 8-й кофе</button>
-                <button class="btn-redeem-streak" id="btnRedeemStreak" style="display: none;" onclick="redeemStreak()">Списать бонус (Стрик)</button>
+                <button class="btn-redeem-streak" id="btnRedeemStreak" style="display: none;" onclick="redeemStreak()">Списать бонус</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- МЕНЮ ДЛЯ БАРИСТА (Без цен, с сиропами) -->
+    <section class="menu-section container" id="menu">
+        <h2 class="section-title">Шпаргалка <span>меню</span></h2>
+        <div class="menu-grid">
+            
+            <!-- Классика -->
+            <div class="menu-category">
+                <h3>Классика</h3>
+                <div class="menu-item"><span class="item-name">Эспрессо х2 <span class="item-desc">40 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Американо <span class="item-desc">250 / 300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Капучино <span class="item-desc">250 / 300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Флэт Уайт <span class="item-desc">300 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Латте <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Раф Ванильный <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Бамбл горячий <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Моккачино <span class="item-desc">300 / 400 мл</span></span></div>
+            </div>
+
+            <!-- Авторские -->
+            <div class="menu-category">
+                <h3>Авторские напитки</h3>
+                <div class="menu-item"><span class="item-name">Еловый Экспресс <span class="item-desc">40 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Матча Малиновый Поцелуй <span class="item-desc">400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Капучино Баунти <span class="item-desc">400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Раф Вкус Детства <span class="item-desc">400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Арахисовый Раф <span class="item-desc">400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Раф Халва <span class="item-desc">400 мл</span></span></div>
+            </div>
+
+            <!-- Освежающие -->
+            <div class="menu-category">
+                <h3>Освежающие</h3>
+                <div class="menu-item"><span class="item-name">Эспрессо-тоник Ментол <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Эспрессо тоник Бузина <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Эспрессо-тоник Вишневый <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Эспрессо-тоник Классический <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Эспрессо-тоник Апельсиновый <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Матча-Тоник <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Айс Латте <span class="item-desc">500 мл</span></span></div>
+            </div>
+
+            <!-- Матча / Бамблы -->
+            <div class="menu-category">
+                <h3>Матча / Бамблы</h3>
+                <div class="menu-subtitle">Японские чаи</div>
+                <div class="menu-item"><span class="item-name">Матча Зеленая <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Матча Голубая <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Матча Фиолетовая <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Матча Соленая Фисташка <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Айс Матча <span class="item-desc">500 мл</span></span></div>
+                
+                <div class="menu-subtitle">Айс бамблы</div>
+                <div class="menu-item"><span class="item-name">Айс Бамбл Классический <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Айс Бамбл Еловый <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Айс Матча Бамбл <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Айс Матча Бамбл Вишня <span class="item-desc">500 мл</span></span></div>
+            </div>
+
+            <!-- Сезонное -->
+            <div class="menu-category">
+                <h3>Сезонное</h3>
+                <div class="menu-subtitle">Осень</div>
+                <div class="menu-item"><span class="item-name">Латте пряная тыква <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Капучино кленовый марципан <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Латте вишня сакура <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Раф пряный ром <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Еловый бамбл <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Латте кнолле <span class="item-desc">300 / 400 мл</span></span></div>
+                
+                <div class="menu-subtitle">Зима</div>
+                <div class="menu-item"><span class="item-name">Капучино клюква в шоколаде <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Латте мята-барбарис <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Раф мятный пряник <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Глинтвейн ягодный <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Клюквенный пунш <span class="item-desc">300 / 400 мл</span></span></div>
+            </div>
+
+            <!-- Чайная карта -->
+            <div class="menu-category">
+                <h3>Чайная карта</h3>
+                <div class="menu-subtitle">Ягодные чаи</div>
+                <div class="menu-item"><span class="item-name">Облепиховый чай <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Клюквенный чай <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Малиновый чай <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-subtitle">Какао</div>
+                <div class="menu-item"><span class="item-name">Какао <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-subtitle">Листовые чаи</div>
+                <div class="menu-item"><span class="item-name">Клеопатра <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Нахальный Фрукт <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Эрл Грей <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Ассам <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Сенча <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Молочный улун <span class="item-desc">300 / 400 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Жасминовый чай <span class="item-desc">300 / 400 мл</span></span></div>
+            </div>
+
+            <!-- Милкшейки -->
+            <div class="menu-category">
+                <h3>Милкшейки</h3>
+                <div class="menu-item"><span class="item-name">Милкшейк Орео <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Милкшейк Медовик <span class="item-desc">500 мл</span></span></div>
+                <div class="menu-item"><span class="item-name">Милкшейк Классический <span class="item-desc">500 мл</span></span></div>
+            </div>
+
+            <!-- СИРОПЫ (НОВЫЙ БЛОК) -->
+            <div class="menu-category">
+                <h3>Сиропы</h3>
+                <div class="menu-subtitle">Классические</div>
+                <div class="menu-item"><span class="item-name">Ванильный</span></div>
+                <div class="menu-item"><span class="item-name">Карамельный</span></div>
+                <div class="menu-item"><span class="item-name">Лесной орех</span></div>
+                <div class="menu-item"><span class="item-name">Соленая карамель</span></div>
+                
+                <div class="menu-subtitle">Фруктовые и ягодные</div>
+                <div class="menu-item"><span class="item-name">Малина</span></div>
+                <div class="menu-item"><span class="item-name">Клубника</span></div>
+                <div class="menu-item"><span class="item-name">Вишня</span></div>
+                <div class="menu-item"><span class="item-name">Бузина</span></div>
+                <div class="menu-item"><span class="item-name">Облепиха</span></div>
+                
+                <div class="menu-subtitle">Пряные и необычные</div>
+                <div class="menu-item"><span class="item-name">Мятный</span></div>
+                <div class="menu-item"><span class="item-name">Еловый</span></div>
+                <div class="menu-item"><span class="item-name">Пряная тыква</span></div>
+                <div class="menu-item"><span class="item-name">Имбирный пряник</span></div>
+                <div class="menu-item"><span class="item-name">Лаванда</span></div>
+            </div>
+
+            <!-- ДОПЫ -->
+            <div class="menu-category">
+                <h3>Допы</h3>
+                <div class="menu-subtitle">Альтернативное молоко</div>
+                <div class="menu-item"><span class="item-name">Миндальное</span></div>
+                <div class="menu-item"><span class="item-name">Кокосовое</span></div>
+                <div class="menu-item"><span class="item-name">Овсяное</span></div>
+                <div class="menu-item"><span class="item-name">Соевое</span></div>
+                <div class="menu-subtitle">Прочее</div>
+                <div class="menu-item"><span class="item-name">Дополнительный шот</span></div>
+                <div class="menu-item"><span class="item-name">Сливки</span></div>
+                <div class="menu-item"><span class="item-name">Корица / Какао</span></div>
             </div>
 
         </div>
-    </div>
+    </section>
 
-    <!-- Модалка Сканера -->
+    <!-- МОДАЛКА СКАНЕРА -->
     <div class="scanner-modal" id="scannerModal">
         <div class="scanner-box">
-            <p>Наведите камеру на QR-код гостя</p>
+            <p style="font-size: 18px; font-weight: 600; color: #fff;">Наведите камеру на QR-код гостя</p>
         </div>
         <button class="close-scanner" onclick="closeScanner()">Отмена</button>
     </div>
 
     <script>
-        // === БАЗА ДАННЫХ (ТЕСТОВАЯ) ===
-        // Для теста 24-часового лимита, у Ивана в lastStreakUpdate стоит время СЕЙЧАС. 
-        // Поэтому при нажатии "+1 День" выскочит ошибка. 
-        // Чтобы обнулить лимит, откройте консоль (F12) и введите: db[0].lastStreakUpdate = 0;
+        // БАЗА ДАННЫХ (ТЕСТОВАЯ)
         let db = [
-            { 
-                phone: "79991112233", 
-                code: "123456", 
-                name: "Иван", 
-                cups: 7, 
-                streak: 3, 
-                lastStreakUpdate: Date.now(), // Текущее время (лимит 24 часа)
-                reward: null 
-            },
-            { 
-                phone: "79000000000", 
-                code: "999999", 
-                name: "Александр", 
-                cups: 2, 
-                streak: 4, 
-                lastStreakUpdate: 0, 
-                reward: "Дополнительный шот" 
-            }
+            { phone: "79991112233", code: "123456", name: "Иван", cups: 7, streak: 3, lastStreakUpdate: Date.now(), reward: null },
+            { phone: "79000000000", code: "999999", name: "Александр", cups: 2, streak: 4, lastStreakUpdate: 0, reward: "Дополнительный шот" }
         ];
 
         let currentGuest = null;
 
-        // Функции интерфейса
+        // Сканер
         function openScanner() {
             document.getElementById('scannerModal').classList.add('active');
-            // Имитация успешного сканирования через 2 секунды
             setTimeout(() => {
                 if(document.getElementById('scannerModal').classList.contains('active')) {
                     closeScanner();
@@ -396,7 +416,7 @@
             document.getElementById('scannerModal').classList.remove('active');
         }
 
-        // Поиск гостя
+        // Поиск
         function searchGuest() {
             const input = document.getElementById('searchInput').value.trim().replace(/\D/g, '');
             
@@ -405,27 +425,25 @@
                 return;
             }
 
-            // Ищем в базе
             currentGuest = db.find(user => user.phone === input || user.code === input);
 
             if (currentGuest) {
                 document.getElementById('guestCard').classList.add('active');
                 renderGuestData();
+                document.getElementById('guestCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
                 alert("Гость не найден!");
                 document.getElementById('guestCard').classList.remove('active');
             }
         }
 
-        // Отрисовка данных гостя
+        // Отрисовка
         function renderGuestData() {
             if (!currentGuest) return;
 
-            // Имя и телефон
             document.getElementById('gName').textContent = currentGuest.name;
             document.getElementById('gDetails').textContent = `+${currentGuest.phone} • Код: ${currentGuest.code}`;
 
-            // Стаканчики (7 штук)
             const cupsContainer = document.getElementById('cupsContainer');
             cupsContainer.innerHTML = '';
             for (let i = 0; i < 7; i++) {
@@ -433,14 +451,12 @@
                 cupsContainer.innerHTML += svg;
             }
 
-            // Огоньки (Стрик)
             document.getElementById('f1').classList.toggle('active', currentGuest.streak >= 1);
             document.getElementById('f2').classList.toggle('active', currentGuest.streak >= 2);
             document.getElementById('f3').classList.toggle('active', currentGuest.streak >= 3);
             document.getElementById('f4').classList.toggle('active', currentGuest.streak >= 4);
             document.getElementById('gStreakText').textContent = `${currentGuest.streak}/4`;
 
-            // Проверка плашки бонуса
             const rewardNotice = document.getElementById('rewardNotice');
             if (currentGuest.streak >= 4 && currentGuest.reward) {
                 rewardNotice.classList.add('active');
@@ -449,46 +465,35 @@
                 rewardNotice.classList.remove('active');
             }
 
-            // Кнопки списания
             document.getElementById('btnRedeemCup').style.display = currentGuest.cups === 7 ? 'block' : 'none';
             document.getElementById('btnRedeemStreak').style.display = currentGuest.streak >= 4 ? 'block' : 'none';
         }
 
-        // Кнопки действий
+        // Действия
         function addCup() {
-            if (currentGuest.cups >= 7) {
-                alert("У гостя уже 7 из 7. Сначала спишите бесплатный напиток!");
-                return;
-            }
+            if (currentGuest.cups >= 7) return alert("У гостя уже 7 из 7. Сначала спишите бесплатный напиток!");
             currentGuest.cups++;
             renderGuestData();
             if(currentGuest.cups === 7) alert("Гость собрал 7 чашек! Доступен 8-й кофе.");
         }
 
         function addStreak() {
-            if (currentGuest.streak >= 4) {
-                alert("У гостя уже есть бонус за стрик! Сначала спишите его.");
-                return;
-            }
+            if (currentGuest.streak >= 4) return alert("У гостя уже есть бонус за стрик! Сначала спишите его.");
 
-            // ПРОВЕРКА 24 ЧАСОВ
             const now = Date.now();
             const oneDay = 24 * 60 * 60 * 1000;
             if (currentGuest.lastStreakUpdate && (now - currentGuest.lastStreakUpdate < oneDay)) {
-                alert("Ошибка: Стрик уже начислен сегодня! Повторно можно будет начислить только завтра.");
-                return;
+                return alert("Ошибка: Стрик уже начислен сегодня! Повторно можно будет начислить только завтра.");
             }
 
             currentGuest.streak++;
             currentGuest.lastStreakUpdate = now;
 
             if (currentGuest.streak === 4) {
-                // Рандомайзер
                 const rand = Math.random();
                 if (rand < 0.5) currentGuest.reward = "Сироп (любой)";
                 else if (rand < 0.8) currentGuest.reward = "Дополнительный шот";
                 else currentGuest.reward = "Альтернативное молоко";
-                
                 alert(`Стрик собран! Выпал бонус: ${currentGuest.reward}`);
             }
             renderGuestData();
