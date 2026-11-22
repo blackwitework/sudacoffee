@@ -6,7 +6,7 @@
     <title>СЮДА — за вкусным кофе</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Golos+Text:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Golos+Text:wght@400;600;800&family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     
     <style>
@@ -32,9 +32,8 @@
         header { position: fixed; top: 0; width: 100%; background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(12px); z-index: 100; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .nav { display: flex; justify-content: space-between; align-items: center; height: 70px; }
         
-        .logo-mini { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 26px; letter-spacing: -1px; display: flex; align-items: center; position: relative; }
-        .logo-mini .a-letter { position: relative; display: inline-block; margin-left: 2px; }
-        .logo-mini .arrow-svg { position: absolute; right: -14px; bottom: 2px; width: 18px; height: 18px; fill: var(--accent); transform: rotate(-15deg); }
+        .logo-mini { display: flex; align-items: center; }
+        .logo-mini-img { height: 40px; width: auto; display: block; }
         
         .nav-links { display: flex; gap: 30px; font-weight: 600; font-size: 14px; }
         .nav-links a:hover { color: var(--accent); transition: 0.2s; }
@@ -47,11 +46,9 @@
         /* ===== HERO & LOGO ===== */
         .hero { padding: 160px 0 100px; text-align: center; position: relative; }
         .hero::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, rgba(5,5,5,0) 70%); z-index: -1; pointer-events: none; }
+        
         .hero-logo-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 50px; }
-        .logo-top-text { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: clamp(18px, 3vw, 32px); letter-spacing: 0.5px; color: #ffffff; margin-bottom: 0px; }
-        .logo-main-text { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: clamp(90px, 16vw, 170px); line-height: 0.9; letter-spacing: -0.04em; display: flex; align-items: flex-end; position: relative; color: #ffffff; }
-        .logo-a-wrapper { position: relative; display: inline-block; }
-        .logo-arrow { position: absolute; left: 65%; bottom: -5px; width: clamp(70px, 13vw, 140px); height: clamp(70px, 13vw, 140px); fill: var(--accent); transform: rotate(-10deg); z-index: 2; }
+        .hero-logo-img { display: block; width: 100%; max-width: 800px; height: auto; margin-inline: auto; }
 
         .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
         .btn { display: inline-block; background-color: var(--accent); color: white; padding: 18px 40px; border-radius: 50px; font-weight: 800; font-size: 18px; transition: 0.3s; border: none; cursor: pointer; font-family: 'Golos Text', sans-serif; }
@@ -81,7 +78,6 @@
         .about-content h2 span { color: var(--accent); }
         .about-content p { color: var(--text-muted); font-size: 16px; line-height: 1.7; margin-bottom: 20px; }
         
-        /* Обновленный блок статистики */
         .about-stats { 
             display: flex; 
             flex-direction: row; 
@@ -93,7 +89,7 @@
             display: flex; 
             align-items: baseline; 
             gap: 12px; 
-            white-space: nowrap; /* Запрещает перенос внутри блока */
+            white-space: nowrap;
         }
         .stat-item b { 
             font-family: 'Montserrat', sans-serif; 
@@ -144,6 +140,8 @@
         .item-name { font-size: 16px; font-weight: 600; line-height: 1.3; }
         .item-desc { font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px; font-weight: 400; }
         .item-price { font-weight: 800; color: var(--accent); white-space: nowrap; margin-left: 15px; }
+
+        #menu, #menu * { font-family: 'Onest', Arial, sans-serif; }
 
         /* ===== LOCATION ===== */
         .location-section { background: var(--surface); padding: 40px; border-radius: 30px; margin-bottom: 100px; border: 1px solid rgba(138, 43, 226, 0.3); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
@@ -199,7 +197,6 @@
 
         #qrcode { display: flex; justify-content: center; margin: 20px auto 10px; background: white; padding: 15px; border-radius: 16px; width: fit-content; }
         
-        /* === СТИЛИ ДЛЯ РЕЗЕРВНОГО КОДА === */
         .fallback-code-block {
             background: rgba(255,255,255,0.03);
             border: 1px dashed rgba(138, 43, 226, 0.5);
@@ -257,9 +254,10 @@
 
     <header>
         <div class="container nav">
-            <div class="logo-mini">
-                СЮД<span class="a-letter">А<svg class="arrow-svg" viewBox="0 0 100 100"><path d="M10,90 L10,40 L40,40 L40,10 L90,60 L60,60 L60,90 Z"/></svg></span>
-            </div>
+            <!-- Заменили текстовый логотип на картинку -->
+            <a href="#" class="logo-mini">
+                <img src="logo.png" alt="СЮДА" class="logo-mini-img">
+            </a>
             <div class="nav-links">
                 <a href="#menu">Меню</a>
                 <a href="#about">О нас</a>
@@ -272,10 +270,8 @@
     <section class="hero">
         <div class="container">
             <div class="hero-logo-container">
-                <div class="logo-top-text">за вкусным кофе</div>
-                <div class="logo-main-text">
-                    СЮД<span class="logo-a-wrapper">А<svg class="logo-arrow" viewBox="0 0 100 100"><path d="M10,90 L10,40 L40,40 L40,10 L90,60 L60,60 L60,90 Z"/></svg></span>
-                </div>
+                <!-- Заменили большой текстовый логотип на картинку -->
+                <img src="logo-hero.png" alt="СЮДА - за вкусным кофе" class="hero-logo-img">
             </div>
             
             <div class="hero-actions">
@@ -471,7 +467,6 @@
         <div class="modal-content">
             <span class="close-btn" id="closeAuth">&times;</span>
             
-            <!-- ЭКРАН ВХОДА / РЕГИСТРАЦИИ -->
             <div id="authSection">
                 <h2>Профиль</h2>
                 <div class="tabs">
@@ -492,15 +487,11 @@
                 </form>
             </div>
 
-            <!-- ЭКРАН ПОСЛЕ ВХОДА -->
             <div id="dashboardSection" class="dashboard-content">
-                
-                <!-- ВИД 1: МОЯ ЛОЯЛЬНОСТЬ (QR-код и короткий код) -->
                 <div id="loyaltyView" style="display: none;">
                     <h2 style="margin-bottom: 20px;">Ваш QR-код</h2>
                     <div id="qrcode"></div>
                     
-                    <!-- Блок с резервным коротким кодом -->
                     <div class="fallback-code-block">
                         <div class="fallback-label">Ваш уникальный код:</div>
                         <div class="fallback-code" id="fallbackCode">000000</div>
@@ -509,7 +500,6 @@
                     <p class="qr-hint" style="margin-top: 5px;">Покажите QR или назовите код бариста</p>
                 </div>
 
-                <!-- ВИД 2: ПРОФИЛЬ (Только баланс и выход) -->
                 <div id="profileView" style="display: none;">
                     <h2 id="greetingTitle">Здравствуйте!</h2>
                     
@@ -529,7 +519,6 @@
                         </div>
                     </div>
 
-                    <!-- Блок с выпавшим рандомным бонусом -->
                     <div class="free-drink" id="streakRewardBlock" style="border-color: var(--fire); background: rgba(255, 123, 0, 0.1);">
                         <h4 style="color: var(--fire);">Огонёк разгорелся!</h4>
                         <p>Ваш бонус: <b id="streakRewardText" style="color: #fff;"></b></p>
@@ -542,12 +531,11 @@
 
                     <button class="btn" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 15px; width: 100%;" onclick="logout()">Выйти из аккаунта</button>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- АДМИНКА (ТЕСТ) -->
+    <!-- АДМИНКА -->
     <div class="modal" id="adminModal">
         <div class="modal-content admin-panel">
             <span class="close-btn" id="closeAdmin">&times;</span>
@@ -575,7 +563,6 @@
                         <div>Стрик: <b id="guestStreak" style="color: var(--fire);">0</b> / 4</div>
                     </div>
                     
-                    <!-- Информация для баристы о выпавшем бонусе -->
                     <div id="adminStreakReward" style="display: none; margin-bottom: 15px; font-size: 15px; color: var(--fire);">
                         Бонус за огонек: <b id="adminRewardText" style="color: #fff;"></b>
                     </div>
@@ -592,7 +579,6 @@
     </div>
 
     <script>
-        // Инициализация базы (теперь с shortCode и streakReward)
         if (!localStorage.getItem('sudacoffee_db')) {
             const initialDB = {
                 "79991112233": { password: "123", name: "Иван", cups: 2, streak: 1, shortCode: "123456", streakReward: null }
@@ -603,18 +589,16 @@
         function getDB() { return JSON.parse(localStorage.getItem('sudacoffee_db')); }
         function saveDB(db) { localStorage.setItem('sudacoffee_db', JSON.stringify(db)); }
 
-        // Функция генерации уникального 6-значного кода
         function generateUniqueShortCode(db) {
             let code;
             let isUnique = false;
             while (!isUnique) {
-                code = Math.floor(100000 + Math.random() * 900000).toString(); // 6 цифр
+                code = Math.floor(100000 + Math.random() * 900000).toString();
                 isUnique = !Object.values(db).some(user => user.shortCode === code);
             }
             return code;
         }
 
-        // Рандомайзер бонусов за стрик (Сироп 50%, Шот 30%, Молоко 20%)
         function getRandomStreakReward() {
             const rand = Math.random();
             if (rand < 0.5) return "Сироп (любой)";
@@ -687,12 +671,10 @@
                 currentPhone = phone;
                 currentName = db[phone].name || 'Гость';
 
-                // Миграция для старых пользователей (добавляем shortCode, если его нет)
                 if (!db[phone].shortCode) {
                     db[phone].shortCode = generateUniqueShortCode(db);
                     saveDB(db);
                 }
-                // Если у пользователя уже 4 стрика, но нет бонуса, генерируем его
                 if (db[phone].streak >= 4 && !db[phone].streakReward) {
                     db[phone].streakReward = getRandomStreakReward();
                     saveDB(db);
@@ -742,7 +724,6 @@
                 document.getElementById('loyaltyView').style.display = 'none';
                 document.getElementById('profileView').style.display = 'block';
 
-                // Обращение на "Вы"
                 document.getElementById('greetingTitle').textContent = `Здравствуйте, ${currentName}!`;
 
                 const cupsContainer = document.getElementById('cupsContainer');
@@ -758,7 +739,6 @@
                 document.getElementById('flame4').classList.toggle('active', user.streak >= 4);
                 document.getElementById('streakText').textContent = `${user.streak}/4`;
 
-                // Отображение блока с рандомным бонусом за стрик
                 const streakRewardBlock = document.getElementById('streakRewardBlock');
                 if (user.streak >= 4 && user.streakReward) {
                     streakRewardBlock.classList.add('active');
@@ -767,7 +747,6 @@
                     streakRewardBlock.classList.remove('active');
                 }
 
-                // Отображение блока с бесплатным напитком (чашки)
                 const freeDrinkBlock = document.getElementById('freeDrinkBlock');
                 if (user.cups === 7) {
                     freeDrinkBlock.classList.add('active');
@@ -798,9 +777,6 @@
             }
         }
 
-        // ==========================================
-        // ПАНЕЛЬ БАРИСТЫ
-        // ==========================================
         const adminModal = document.getElementById('adminModal');
         document.getElementById('openAdminPanel').addEventListener('click', () => adminModal.classList.add('active'));
         document.getElementById('closeAdmin').addEventListener('click', () => adminModal.classList.remove('active'));
