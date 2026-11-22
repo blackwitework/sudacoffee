@@ -55,7 +55,6 @@
         .btn:hover { background-color: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3); }
         .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
         .btn-outline:hover { background: var(--accent); color: white; }
-        .btn-small { padding: 10px 20px; font-size: 14px; }
 
         /* ===== FEATURES ===== */
         .features { display: flex; justify-content: center; margin-top: 80px; margin-bottom: 100px; }
@@ -79,10 +78,36 @@
         .about-content h2 span { color: var(--accent); }
         .about-content p { color: var(--text-muted); font-size: 16px; line-height: 1.7; margin-bottom: 20px; }
         
-        .about-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: 40px; }
-        .stat-item { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
-        .stat-item b { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; color: var(--accent); line-height: 1.1; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .stat-item span { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.5; }
+        /* === СТАТИСТИКА (Красиво выровнена) === */
+        .about-stats { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 30px; 
+            margin-top: 40px; 
+        }
+        .stat-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: flex-start; 
+            text-align: left;
+        }
+        .stat-item b { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 22px; 
+            font-weight: 900; 
+            color: var(--accent); 
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .stat-item span { 
+            font-size: 11px; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            line-height: 1.5;
+        }
         
         .about-image {
             background: linear-gradient(135deg, #2a1642 0%, #141414 100%);
@@ -133,7 +158,9 @@
 
         /* ===== FOOTER ===== */
         footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--text-muted); font-size: 14px; }
-        
+        .admin-link { color: #222; cursor: pointer; font-size: 12px; margin-top: 15px; display: inline-block; transition: 0.3s; }
+        .admin-link:hover { color: var(--accent); }
+
         /* ===== MODALS ===== */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; }
         .modal.active { display: flex; }
@@ -178,8 +205,9 @@
         .fallback-label { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         .fallback-code { font-family: 'Courier New', Courier, monospace; font-size: 26px; font-weight: 900; color: #ffffff; letter-spacing: 4px; }
 
-        /* ===== STAFF PANEL (Внутри профиля) ===== */
-        .staff-view { display: none; text-align: left; }
+        /* ===== ADMIN PANEL ===== */
+        .admin-panel { text-align: left; }
+        .admin-panel h2 { text-align: center; }
         .admin-search { display: flex; gap: 10px; margin-bottom: 20px; }
         .admin-search input { flex: 1; padding: 12px; background: var(--bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; outline: none; }
         .admin-search button { background: var(--accent); border: none; color: white; padding: 0 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
@@ -194,13 +222,6 @@
         .btn-add-cup { background: var(--accent); color: white; }
         .btn-add-streak { background: var(--fire); color: white; }
         .btn-redeem { background: var(--success); color: white; }
-
-        .staff-list { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-        .staff-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 8px; font-size: 14px;}
-        .btn-remove-staff { background: var(--danger); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 12px;}
-        
-        #ownerTools { display: none; margin-top: 25px; background: rgba(138, 43, 226, 0.05); border: 1px solid rgba(138, 43, 226, 0.2); padding: 15px; border-radius: 12px; }
-        #ownerTools h3 { font-size: 16px; margin-bottom: 10px; color: var(--accent); font-family: 'Montserrat', sans-serif;}
 
         /* ===== АДАПТИВ ===== */
         @media (max-width: 900px) {
@@ -421,15 +442,15 @@
         <div class="container">
             <p>© 2026 Кофейня «СЮДА». За вкусным кофе.</p>
             <p style="margin-top: 10px; font-size: 14px; font-weight: 600; color: #fff;">Будни: 7:00–22:00 · Выходные: 8:00–21:00</p>
+            <span class="admin-link" id="openAdminPanel">Вход для персонала (тест)</span>
         </div>
     </footer>
 
-    <!-- МОДАЛЬНОЕ ОКНО (Профиль / Панель бариста / Панель владельца) -->
+    <!-- МОДАЛЬНОЕ ОКНО ПРОФИЛЯ -->
     <div class="modal" id="authModal">
         <div class="modal-content">
             <span class="close-btn" id="closeAuth">&times;</span>
             
-            <!-- ЭКРАН ВХОДА / РЕГИСТРАЦИИ -->
             <div id="authSection">
                 <h2>Профиль</h2>
                 <div class="tabs">
@@ -450,10 +471,7 @@
                 </form>
             </div>
 
-            <!-- РАБОЧИЙ ЭКРАН ПОСЛЕ ВХОДА -->
             <div id="dashboardSection" class="dashboard-content">
-                
-                <!-- 1. ГОСТЕВОЙ ПРОФИЛЬ (Лояльность) -->
                 <div id="loyaltyView" style="display: none;">
                     <h2 style="margin-bottom: 20px;">Ваш QR-код</h2>
                     <div id="qrcode"></div>
@@ -494,76 +512,60 @@
                         <h4>Доступен бесплатный напиток</h4>
                         <p>Вы собрали 7 стаканчиков. Просто покажите этот экран бариста.</p>
                     </div>
+
+                    <button class="btn" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 15px; width: 100%;" onclick="logout()">Выйти из аккаунта</button>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- 2. ПАНЕЛЬ БАРИСТЫ / ВЛАДЕЛЬЦА -->
-                <div id="staffView" class="staff-view">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                        <h2 style="margin: 0; font-size: 20px;">Панель баристы</h2>
-                        <span style="font-size: 12px; color: var(--text-muted);">Сотрудник: <b id="staffNameDisplay" style="color: var(--accent);"></b></span>
+    <!-- АДМИНКА -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content admin-panel">
+            <span class="close-btn" id="closeAdmin">&times;</span>
+            <h2 style="text-align: center;">Панель баристы</h2>
+            
+            <div id="adminAuthSection">
+                <div class="input-group">
+                    <input type="password" id="adminPass" placeholder="Пароль (admin)">
+                </div>
+                <button class="btn" onclick="loginAdmin()">Войти</button>
+            </div>
+            
+            <div id="adminWork" style="display: none;">
+                <div class="admin-search">
+                    <input type="text" id="searchPhone" placeholder="Номер (11 цифр) или Код (6 цифр)" maxlength="18">
+                    <button onclick="findUser()">Найти</button>
+                </div>
+                
+                <div id="userInfo" class="user-card">
+                    <div class="user-card-head">
+                        <b id="guestPhone">-</b>
                     </div>
-
-                    <div class="admin-search">
-                        <input type="text" id="searchPhone" placeholder="Номер (11) или Код (6)" maxlength="18">
-                        <button onclick="findUser()">Найти</button>
+                    <div class="user-stats">
+                        <div>Чашек: <b id="guestCups" style="color: var(--accent);">0</b> / 7</div>
+                        <div>Стрик: <b id="guestStreak" style="color: var(--fire);">0</b> / 4</div>
                     </div>
                     
-                    <div id="userInfo" class="user-card">
-                        <div class="user-card-head">
-                            <b id="guestPhone">-</b>
-                        </div>
-                        <div class="user-stats">
-                            <div>Чашек: <b id="guestCups" style="color: var(--accent);">0</b> / 7</div>
-                            <div>Стрик: <b id="guestStreak" style="color: var(--fire);">0</b> / 4</div>
-                        </div>
-                        
-                        <div id="adminStreakReward" style="display: none; margin-bottom: 15px; font-size: 15px; color: var(--fire);">
-                            Бонус за огонек: <b id="adminRewardText" style="color: #fff;"></b>
-                        </div>
-                        
-                        <div class="admin-btn-group">
-                            <button class="btn-add-cup" onclick="addCup()">+1 Чашка</button>
-                            <button class="btn-add-streak" onclick="addStreak()">+1 День (Стрик)</button>
-                            <button class="btn-redeem" onclick="redeemFreeDrink()" style="display: none;" id="redeemBtn">Списать бесплатный (Чашка)</button>
-                            <button class="btn-redeem" onclick="redeemStreak()" style="display: none; background: var(--fire);" id="redeemStreakBtn">Списать бонус (Стрик)</button>
-                        </div>
+                    <div id="adminStreakReward" style="display: none; margin-bottom: 15px; font-size: 15px; color: var(--fire);">
+                        Бонус за огонек: <b id="adminRewardText" style="color: #fff;"></b>
                     </div>
-
-                    <!-- БЛОК УПРАВЛЕНИЯ ПЕРСОНАЛОМ (Только для владельца) -->
-                    <div id="ownerTools">
-                        <h3>Управление персоналом</h3>
-                        <div class="input-group">
-                            <input type="tel" id="newStaffPhone" placeholder="Номер нового бариста" maxlength="18">
-                        </div>
-                        <div class="input-group">
-                            <input type="text" id="newStaffName" placeholder="Имя бариста">
-                        </div>
-                        <div class="input-group">
-                            <input type="password" id="newStaffPass" placeholder="Пароль для входа">
-                        </div>
-                        <button class="btn btn-small" style="width: 100%; margin-bottom: 15px;" onclick="addStaff()">Добавить бариста</button>
-                        
-                        <div class="staff-list">
-                            <h4 style="font-size: 14px; margin-bottom: 10px; color: #fff;">Список бариста:</h4>
-                            <div id="staffListContainer"></div>
-                        </div>
+                    
+                    <div class="admin-btn-group">
+                        <button class="btn-add-cup" onclick="addCup()">+1 Чашка</button>
+                        <button class="btn-add-streak" onclick="addStreak()">+1 День (Стрик)</button>
+                        <button class="btn-redeem" onclick="redeemFreeDrink()" style="display: none;" id="redeemBtn">Списать бесплатный (Чашка)</button>
+                        <button class="btn-redeem" onclick="redeemStreak()" style="display: none; background: var(--fire);" id="redeemStreakBtn">Списать бонус (Стрик)</button>
                     </div>
                 </div>
-
-                <!-- КНОПКА ВЫХОДА -->
-                <button id="logoutBtn" class="btn" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 25px; width: 100%; display: none;" onclick="logout()">Выйти из аккаунта</button>
             </div>
         </div>
     </div>
 
     <script>
-        // ИНИЦИАЛИЗАЦИЯ БАЗЫ (Роли: owner, barista, guest)
         if (!localStorage.getItem('sudacoffee_db')) {
             const initialDB = {
-                // Ваш аккаунт владельца
-                "79991112233": { password: "123", name: "Иван (Владелец)", cups: 0, streak: 0, shortCode: "123456", streakReward: null, role: "owner" },
-                // Тестовый аккаунт бариста
-                "79990001122": { password: "1111", name: "Аня (Бариста)", cups: 0, streak: 0, shortCode: "654321", streakReward: null, role: "barista" }
+                "79991112233": { password: "123", name: "Иван", cups: 2, streak: 1, shortCode: "123456", streakReward: null }
             };
             localStorage.setItem('sudacoffee_db', JSON.stringify(initialDB));
         }
@@ -594,27 +596,27 @@
         const authSection = document.getElementById('authSection');
         const dashboardSection = document.getElementById('dashboardSection');
         const qrcodeContainer = document.getElementById('qrcode');
-        const logoutBtn = document.getElementById('logoutBtn');
         
         let currentPhone = null;
         let currentName = null;
-        let currentRole = null;
         let qrcodeInstance = null;
         let isLoginMode = true;
+        let modalMode = 'loyalty'; 
 
-        function openModal() {
+        function openModal(mode) {
+            modalMode = mode;
             authModal.classList.add('active');
+            
             if (currentPhone) {
                 showDashboard(); 
             } else {
                 authSection.style.display = 'block';
                 dashboardSection.classList.remove('active');
-                logoutBtn.style.display = 'none';
             }
         }
 
-        openAuthBtn.addEventListener('click', openModal);
-        document.getElementById('openLoyaltyFromHero').addEventListener('click', openModal);
+        openAuthBtn.addEventListener('click', () => openModal('profile'));
+        document.getElementById('openLoyaltyFromHero').addEventListener('click', () => openModal('loyalty'));
         closeAuthBtn.addEventListener('click', () => authModal.classList.remove('active'));
 
         function switchTab(mode) {
@@ -648,12 +650,10 @@
             const db = getDB();
 
             if (isLoginMode) {
-                if (!db[phone]) return alert("Пользователь не найден. Зарегистрируйтесь.");
+                if (!db[phone]) return alert("Гость не найден. Зарегистрируйтесь.");
                 if (db[phone].password !== pass) return alert("Неверный пароль!");
-                
                 currentPhone = phone;
                 currentName = db[phone].name || 'Гость';
-                currentRole = db[phone].role || 'guest'; // По умолчанию - гость
 
                 if (!db[phone].shortCode) {
                     db[phone].shortCode = generateUniqueShortCode(db);
@@ -672,11 +672,10 @@
                 
                 const newShortCode = generateUniqueShortCode(db);
                 
-                db[phone] = { password: pass, name: nameVal, cups: 0, streak: 0, shortCode: newShortCode, streakReward: null, role: "guest" };
+                db[phone] = { password: pass, name: nameVal, cups: 0, streak: 0, shortCode: newShortCode, streakReward: null };
                 saveDB(db);
                 currentPhone = phone;
                 currentName = nameVal;
-                currentRole = "guest";
             }
 
             openAuthBtn.textContent = currentName;
@@ -688,34 +687,13 @@
         function showDashboard() {
             authSection.style.display = 'none';
             dashboardSection.classList.add('active');
-            logoutBtn.style.display = 'block';
 
             const db = getDB();
             const user = db[currentPhone];
 
-            // СКРЫВАЕМ ВСЕ ЭКРАНЫ ПО УМОЛЧАНИЮ
-            document.getElementById('loyaltyView').style.display = 'none';
-            document.getElementById('profileView').style.display = 'none';
-            document.getElementById('staffView').style.display = 'none';
-
-            // РАСПРЕДЕЛЕНИЕ ПО РОЛЯМ
-            if (currentRole === 'owner' || currentRole === 'barista') {
-                // ВХОД ДЛЯ ПЕРСОНАЛА
-                document.getElementById('staffView').style.display = 'block';
-                document.getElementById('staffNameDisplay').textContent = currentName;
-                
-                if (currentRole === 'owner') {
-                    document.getElementById('ownerTools').style.display = 'block';
-                    renderStaffList();
-                } else {
-                    document.getElementById('ownerTools').style.display = 'none';
-                }
-            } else {
-                // ВХОД ДЛЯ ГОСТЯ
+            if (modalMode === 'loyalty') {
                 document.getElementById('loyaltyView').style.display = 'block';
-                document.getElementById('profileView').style.display = 'block';
-
-                document.getElementById('greetingTitle').textContent = `Здравствуйте, ${currentName}!`;
+                document.getElementById('profileView').style.display = 'none';
 
                 if (qrcodeInstance) qrcodeInstance.clear();
                 qrcodeContainer.innerHTML = ''; 
@@ -726,6 +704,11 @@
                 });
 
                 document.getElementById('fallbackCode').textContent = user.shortCode || '000000';
+            } else {
+                document.getElementById('loyaltyView').style.display = 'none';
+                document.getElementById('profileView').style.display = 'block';
+
+                document.getElementById('greetingTitle').textContent = `Здравствуйте, ${currentName}!`;
 
                 const cupsContainer = document.getElementById('cupsContainer');
                 cupsContainer.innerHTML = '';
@@ -765,16 +748,12 @@
         function logout() {
             currentPhone = null;
             currentName = null;
-            currentRole = null;
             openAuthBtn.textContent = 'Профиль';
             openAuthBtn.classList.remove('logged-in');
             authModal.classList.remove('active');
             document.getElementById('loginForm').reset();
             authSection.style.display = 'block';
             dashboardSection.classList.remove('active');
-            logoutBtn.style.display = 'none';
-            document.getElementById('userInfo').classList.remove('active');
-            document.getElementById('searchPhone').value = '';
             switchTab('login');
             if (qrcodeInstance) {
                 qrcodeInstance.clear();
@@ -783,8 +762,21 @@
         }
 
         // ==========================================
-        // ФУНКЦИИ ДЛЯ ПАНЕЛИ БАРИСТЫ
+        // ПАНЕЛЬ БАРИСТЫ
         // ==========================================
+        const adminModal = document.getElementById('adminModal');
+        document.getElementById('openAdminPanel').addEventListener('click', () => adminModal.classList.add('active'));
+        document.getElementById('closeAdmin').addEventListener('click', () => adminModal.classList.remove('active'));
+
+        function loginAdmin() {
+            if (document.getElementById('adminPass').value === 'admin') {
+                document.getElementById('adminAuthSection').style.display = 'none';
+                document.getElementById('adminWork').style.display = 'block';
+            } else {
+                alert('Пароль: admin');
+            }
+        }
+
         let searchedPhone = null;
 
         function findUser() {
@@ -793,10 +785,10 @@
             let foundPhone = null;
 
             if (inputVal.length === 11) {
-                if (db[inputVal] && db[inputVal].role !== 'barista' && db[inputVal].role !== 'owner') foundPhone = inputVal;
+                if (db[inputVal]) foundPhone = inputVal;
             } else if (inputVal.length === 6) {
                 for (const phone in db) {
-                    if (db[phone].shortCode === inputVal && db[phone].role !== 'barista' && db[phone].role !== 'owner') {
+                    if (db[phone].shortCode === inputVal) {
                         foundPhone = phone;
                         break;
                     }
@@ -821,8 +813,11 @@
             document.getElementById('guestStreak').textContent = user.streak;
             
             const redeemBtn = document.getElementById('redeemBtn');
-            if (user.cups === 7) redeemBtn.style.display = 'block';
-            else redeemBtn.style.display = 'none';
+            if (user.cups === 7) {
+                redeemBtn.style.display = 'block';
+            } else {
+                redeemBtn.style.display = 'none';
+            }
 
             const redeemStreakBtn = document.getElementById('redeemStreakBtn');
             const adminStreakReward = document.getElementById('adminStreakReward');
@@ -846,10 +841,16 @@
             const db = getDB();
             let user = db[searchedPhone];
             
-            if (user.cups >= 7) return alert('У гостя уже есть 7 из 7. Сначала спишите бесплатный напиток!');
+            if (user.cups >= 7) {
+                alert('У гостя уже есть 7 из 7. Сначала спишите бесплатный напиток!');
+                return;
+            }
             
             user.cups += 1;
-            if (user.cups === 7) alert('Гость собрал 7 чашек! Теперь ему доступен бесплатный напиток.');
+            
+            if (user.cups === 7) {
+                alert('Гость собрал 7 чашек! Теперь ему доступен бесплатный напиток.');
+            }
             
             saveDB(db);
             updateAdminUI();
@@ -861,12 +862,16 @@
             const db = getDB();
             let user = db[searchedPhone];
             
-            if (user.streak >= 4) return alert('У гостя уже есть бонус за стрик! Сначала спишите его.');
+            if (user.streak >= 4) {
+                alert('У гостя уже есть бонус за стрик! Сначала спишите его.');
+                return;
+            }
             
             user.streak += 1;
+            
             if (user.streak === 4) {
                 user.streakReward = getRandomStreakReward();
-                alert(`Гость приходил 4 дня подряд! Выпал бонус: ${user.streakReward}. Нажмите "Списать бонус" при выдаче.`);
+                alert(`Гость приходил 4 дня подряд! Выпал бонус: ${user.streakReward}. Нажмите "Списать бонус (Стрик)" при выдаче.`);
             }
             
             saveDB(db);
@@ -904,76 +909,6 @@
                 alert('Бонус за стрик выдан, счетчик огоньков обнулен!');
             } else {
                 alert('У гостя еще нет 4-х дней подряд.');
-            }
-        }
-
-        // ==========================================
-        // УПРАВЛЕНИЕ ПЕРСОНАЛОМ (ДЛЯ ВЛАДЕЛЬЦА)
-        // ==========================================
-        function addStaff() {
-            if (currentRole !== 'owner') return;
-
-            const phone = document.getElementById('newStaffPhone').value.replace(/\D/g, '');
-            const name = document.getElementById('newStaffName').value.trim();
-            const pass = document.getElementById('newStaffPass').value;
-            const db = getDB();
-
-            if (phone.length !== 11) return alert("Введите 11 цифр номера.");
-            if (!name) return alert("Введите имя бариста.");
-            if (pass.length < 4) return alert("Пароль минимум 4 символа.");
-            if (db[phone]) return alert("Этот номер уже занят в системе!");
-
-            db[phone] = { 
-                password: pass, 
-                name: name, 
-                cups: 0, 
-                streak: 0, 
-                shortCode: generateUniqueShortCode(db), 
-                streakReward: null, 
-                role: "barista" 
-            };
-            saveDB(db);
-            
-            document.getElementById('newStaffPhone').value = '';
-            document.getElementById('newStaffName').value = '';
-            document.getElementById('newStaffPass').value = '';
-            
-            alert(`Бариста ${name} успешно добавлен!`);
-            renderStaffList();
-        }
-
-        function removeStaff(phone) {
-            if (currentRole !== 'owner') return;
-            if (confirm("Вы уверены, что хотите снять права бариста с этого номера?")) {
-                const db = getDB();
-                if (db[phone] && db[phone].role === 'barista') {
-                    delete db[phone];
-                    saveDB(db);
-                    renderStaffList();
-                }
-            }
-        }
-
-        function renderStaffList() {
-            const db = getDB();
-            const container = document.getElementById('staffListContainer');
-            container.innerHTML = '';
-            
-            let hasStaff = false;
-            for (const phone in db) {
-                if (db[phone].role === 'barista') {
-                    hasStaff = true;
-                    const item = document.createElement('div');
-                    item.className = 'staff-item';
-                    item.innerHTML = `
-                        <span>${db[phone].name} (${formatPhone(phone)})</span>
-                        <button class="btn-remove-staff" onclick="removeStaff('${phone}')">Удалить</button>
-                    `;
-                    container.appendChild(item);
-                }
-            }
-            if (!hasStaff) {
-                container.innerHTML = '<div style="font-size: 12px; color: var(--text-muted);">Список пуст</div>';
             }
         }
     </script>
