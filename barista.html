@@ -18,6 +18,7 @@
             --accent-hover: #9b4dff;
             --danger: #e74c3c;
             --success: #2ecc71;
+            --new-red: #ff4757;
             --fire: #ff7b00;
         }
 
@@ -39,10 +40,11 @@
         .auth-btn { background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 8px 20px; border-radius: 50px; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.3s; }
         .auth-btn:hover { background: var(--danger); color: white; }
 
-        /* ===== HERO / STAFF PANEL ===== */
-        .staff-section { padding: 120px 0 80px; min-height: 100vh; }
+        /* ===== BARISTA DASHBOARD (Вместо Hero) ===== */
+        .dashboard-section { padding: 120px 0 60px; text-align: center; position: relative; }
+        .dashboard-section::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, rgba(5,5,5,0) 70%); z-index: -1; pointer-events: none; }
         
-        .page-title { font-family: 'Montserrat', sans-serif; font-size: 40px; font-weight: 900; text-align: center; margin-bottom: 40px; }
+        .page-title { font-family: 'Montserrat', sans-serif; font-size: 36px; font-weight: 900; margin-bottom: 30px; }
         .page-title span { color: var(--accent); }
 
         .search-box {
@@ -50,8 +52,9 @@
             border-radius: 24px;
             padding: 30px;
             max-width: 700px;
-            margin: 0 auto 40px;
+            margin: 0 auto 30px;
             border: 1px solid rgba(255,255,255,0.05);
+            text-align: left;
         }
 
         .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
@@ -66,7 +69,7 @@
         .btn-search {
             background: var(--accent); color: white; border: none;
             padding: 0 30px; border-radius: 12px; font-weight: 800; cursor: pointer;
-            transition: 0.2s; font-size: 16px;
+            transition: 0.2s; font-size: 16px; font-family: 'Golos Text', sans-serif;
         }
         .btn-search:hover { background: var(--accent-hover); }
 
@@ -74,26 +77,26 @@
             width: 100%; background: rgba(138, 43, 226, 0.1); color: var(--accent);
             border: 1px solid var(--accent); padding: 18px; border-radius: 12px;
             font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            gap: 10px; font-size: 16px; transition: 0.2s;
+            gap: 10px; font-size: 16px; transition: 0.2s; font-family: 'Golos Text', sans-serif;
         }
         .btn-scan:hover { background: var(--accent); color: white; }
 
-        /* ===== GUEST CARD ===== */
+        /* === КАРТОЧКА КЛИЕНТА === */
         .guest-card {
             display: none; flex-direction: column; gap: 20px;
             max-width: 700px; margin: 0 auto;
             background: var(--surface); padding: 30px;
             border-radius: 24px; border: 1px solid rgba(138, 43, 226, 0.3);
-            animation: fadeIn 0.3s ease;
+            text-align: center; animation: fadeIn 0.3s ease;
         }
         .guest-card.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .guest-header { text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+        .guest-header { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
         .guest-name { font-size: 28px; font-weight: 800; font-family: 'Montserrat', sans-serif; margin-bottom: 5px; }
         .guest-details { font-size: 14px; color: var(--text-muted); font-family: monospace; }
 
-        .stats-block { background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 25px; text-align: center; }
+        .stats-block { background: rgba(255, 255, 255, 0.03); border-radius: 16px; padding: 25px; }
         .stats-title { font-size: 15px; font-weight: 800; margin-bottom: 15px; color: #fff; }
         
         .cups-container { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; }
@@ -107,7 +110,7 @@
 
         .reward-notice {
             display: none; background: rgba(255, 123, 0, 0.1);
-            border: 1px solid var(--fire); border-radius: 12px; padding: 15px; text-align: center;
+            border: 1px solid var(--fire); border-radius: 12px; padding: 15px;
         }
         .reward-notice.active { display: block; }
         .reward-notice h4 { color: var(--fire); font-size: 16px; margin-bottom: 4px; }
@@ -117,7 +120,7 @@
         .action-buttons button {
             padding: 20px 10px; border-radius: 16px; border: none;
             font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.2s;
-            font-family: 'Golos Text', sans-serif; display: flex; justify-content: center; align-items: center;
+            font-family: 'Golos Text', sans-serif;
         }
         .action-buttons button:active { transform: scale(0.98); }
         
@@ -129,8 +132,8 @@
         .btn-redeem:hover { background: #27ae60; }
         .btn-redeem-streak { background: var(--fire); color: white; grid-column: span 2; }
 
-        /* ===== MENU (Без цен, с сиропами) ===== */
-        .menu-section { padding: 60px 0 100px; background: var(--bg); }
+        /* ===== MENU ===== */
+        .menu-section { padding-bottom: 80px; }
         .section-title { font-family: 'Montserrat', sans-serif; font-size: 40px; font-weight: 900; margin-bottom: 40px; text-transform: uppercase; letter-spacing: -1px; text-align: center; }
         .section-title span { color: var(--accent); }
         
@@ -138,7 +141,7 @@
         .menu-category { break-inside: avoid; -webkit-column-break-inside: avoid; margin-bottom: 30px; background: var(--surface); border-radius: 24px; padding: 30px; display: inline-block; width: 100%; border: 1px solid rgba(255,255,255,0.05); }
         .menu-category h3 { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--accent); display: inline-block; }
         
-        .menu-subtitle { font-size: 15px; font-weight: 800; color: var(--accent); text-transform: uppercase; margin: 25px 0 15px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 10px; }
+        .menu-subtitle { font-size: 15px; font-weight: 800; color: var(--accent); text-transform: uppercase; margin: 25px 0 15px; letter-spacing: 0.5px; }
         .menu-subtitle:first-of-type { margin-top: 0; }
 
         .menu-item { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
@@ -146,10 +149,12 @@
         .item-name { font-size: 16px; font-weight: 600; line-height: 1.3; }
         .item-desc { font-size: 13px; color: var(--text-muted); display: block; margin-top: 4px; font-weight: 400; }
 
-        /* Шрифт для меню */
         #menu, #menu * { font-family: 'Onest', Arial, sans-serif; }
 
-        /* ===== MODAL SCANNER ===== */
+        /* ===== FOOTER ===== */
+        footer { padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--text-muted); font-size: 14px; }
+
+        /* ===== SCANNER MODAL ===== */
         .scanner-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
         .scanner-modal.active { display: flex; }
         .scanner-box { width: 100%; max-width: 400px; aspect-ratio: 1; border: 2px dashed var(--accent); border-radius: 24px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; padding: 20px; position: relative; overflow: hidden; }
@@ -163,10 +168,9 @@
         }
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .page-title { font-size: 32px; }
+            .page-title { font-size: 28px; }
             .input-row { flex-direction: column; }
             .btn-search { padding: 18px; }
-            .guest-header { padding-bottom: 15px; }
             .guest-name { font-size: 24px; }
             .action-buttons { grid-template-columns: 1fr; }
         }
@@ -183,12 +187,12 @@
             <div class="nav-links">
                 <a href="#menu">Меню</a>
             </div>
-            <button class="auth-btn" onclick="alert('Выход из аккаунта бариста')">Выйти</button>
+            <button class="auth-btn" onclick="alert('Сессия завершена. Переход на страницу входа...')">Завершить смену</button>
         </div>
     </header>
 
     <!-- ПАНЕЛЬ БАРИСТА -->
-    <section class="staff-section container">
+    <section class="dashboard-section container">
         <h1 class="page-title">Панель <span>бариста</span></h1>
         
         <div class="search-box">
@@ -198,14 +202,14 @@
             </div>
             <button class="btn-scan" onclick="openScanner()">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10"></rect></svg>
-                Сканировать QR-код гостя
+                Сканировать QR-код клиента
             </button>
         </div>
 
-        <!-- КАРТОЧКА ГОСТЯ -->
+        <!-- КАРТОЧКА КЛИЕНТА -->
         <div class="guest-card" id="guestCard">
             <div class="guest-header">
-                <div class="guest-name" id="gName">Имя гостя</div>
+                <div class="guest-name" id="gName">Имя клиента</div>
                 <div class="guest-details" id="gDetails">+7 ... • Код: ...</div>
             </div>
 
@@ -237,7 +241,7 @@
         </div>
     </section>
 
-    <!-- МЕНЮ ДЛЯ БАРИСТА (Без цен, с сиропами) -->
+    <!-- МЕНЮ -->
     <section class="menu-section container" id="menu">
         <h2 class="section-title">Шпаргалка <span>меню</span></h2>
         <div class="menu-grid">
@@ -382,16 +386,22 @@
         </div>
     </section>
 
+    <footer>
+        <div class="container">
+            <p>© 2026 Кофейня «СЮДА». Внутренний интерфейс.</p>
+        </div>
+    </footer>
+
     <!-- МОДАЛКА СКАНЕРА -->
     <div class="scanner-modal" id="scannerModal">
         <div class="scanner-box">
-            <p style="font-size: 18px; font-weight: 600; color: #fff;">Наведите камеру на QR-код гостя</p>
+            <p style="font-size: 18px; font-weight: 600; color: #fff;">Наведите камеру на QR-код клиента</p>
         </div>
         <button class="close-scanner" onclick="closeScanner()">Отмена</button>
     </div>
 
     <script>
-        // БАЗА ДАННЫХ (ТЕСТОВАЯ)
+        // Имитация базы данных клиентов
         let db = [
             { phone: "79991112233", code: "123456", name: "Иван", cups: 7, streak: 3, lastStreakUpdate: Date.now(), reward: null },
             { phone: "79000000000", code: "999999", name: "Александр", cups: 2, streak: 4, lastStreakUpdate: 0, reward: "Дополнительный шот" }
@@ -432,12 +442,12 @@
                 renderGuestData();
                 document.getElementById('guestCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
-                alert("Гость не найден!");
+                alert("Клиент не найден!");
                 document.getElementById('guestCard').classList.remove('active');
             }
         }
 
-        // Отрисовка
+        // Отрисовка данных
         function renderGuestData() {
             if (!currentGuest) return;
 
@@ -471,14 +481,14 @@
 
         // Действия
         function addCup() {
-            if (currentGuest.cups >= 7) return alert("У гостя уже 7 из 7. Сначала спишите бесплатный напиток!");
+            if (currentGuest.cups >= 7) return alert("У клиента уже 7 из 7. Сначала спишите бесплатный напиток!");
             currentGuest.cups++;
             renderGuestData();
-            if(currentGuest.cups === 7) alert("Гость собрал 7 чашек! Доступен 8-й кофе.");
+            if(currentGuest.cups === 7) alert("Клиент собрал 7 чашек! Доступен 8-й кофе.");
         }
 
         function addStreak() {
-            if (currentGuest.streak >= 4) return alert("У гостя уже есть бонус за стрик! Сначала спишите его.");
+            if (currentGuest.streak >= 4) return alert("У клиента уже есть бонус за стрик! Сначала спишите его.");
 
             const now = Date.now();
             const oneDay = 24 * 60 * 60 * 1000;
