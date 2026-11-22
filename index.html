@@ -55,7 +55,7 @@
         .btn:hover { background-color: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3); }
         .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
         .btn-outline:hover { background: var(--accent); color: white; }
-        .btn-small { padding: 8px 15px; font-size: 14px; }
+        .btn-small { padding: 10px 20px; font-size: 14px; }
 
         /* ===== FEATURES ===== */
         .features { display: flex; justify-content: center; margin-top: 80px; margin-bottom: 100px; }
@@ -174,19 +174,12 @@
 
         #qrcode { display: flex; justify-content: center; margin: 20px auto 10px; background: white; padding: 15px; border-radius: 16px; width: fit-content; }
         
-        .fallback-code-block {
-            background: rgba(255,255,255,0.03);
-            border: 1px dashed rgba(138, 43, 226, 0.5);
-            border-radius: 12px;
-            padding: 15px;
-            margin: 15px 0;
-        }
+        .fallback-code-block { background: rgba(255,255,255,0.03); border: 1px dashed rgba(138, 43, 226, 0.5); border-radius: 12px; padding: 15px; margin: 15px 0; }
         .fallback-label { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         .fallback-code { font-family: 'Courier New', Courier, monospace; font-size: 26px; font-weight: 900; color: #ffffff; letter-spacing: 4px; }
 
-        /* ===== ADMIN PANEL ===== */
-        .admin-panel { text-align: left; }
-        .admin-panel h2 { text-align: center; }
+        /* ===== STAFF PANEL (Внутри профиля) ===== */
+        .staff-view { display: none; text-align: left; }
         .admin-search { display: flex; gap: 10px; margin-bottom: 20px; }
         .admin-search input { flex: 1; padding: 12px; background: var(--bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; outline: none; }
         .admin-search button { background: var(--accent); border: none; color: white; padding: 0 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
@@ -202,13 +195,12 @@
         .btn-add-streak { background: var(--fire); color: white; }
         .btn-redeem { background: var(--success); color: white; }
 
-        /* Стили для управления персоналом */
         .staff-list { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
         .staff-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 8px; font-size: 14px;}
         .btn-remove-staff { background: var(--danger); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 12px;}
         
-        #ownerTools { display: none; margin-top: 20px; background: rgba(138, 43, 226, 0.05); border: 1px solid rgba(138, 43, 226, 0.2); padding: 15px; border-radius: 12px; }
-        #ownerTools h3 { font-size: 16px; margin-bottom: 10px; color: var(--accent); }
+        #ownerTools { display: none; margin-top: 25px; background: rgba(138, 43, 226, 0.05); border: 1px solid rgba(138, 43, 226, 0.2); padding: 15px; border-radius: 12px; }
+        #ownerTools h3 { font-size: 16px; margin-bottom: 10px; color: var(--accent); font-family: 'Montserrat', sans-serif;}
 
         /* ===== АДАПТИВ ===== */
         @media (max-width: 900px) {
@@ -427,17 +419,17 @@
 
     <footer>
         <div class="container">
-            <!-- СЕКРЕТНЫЙ ТРИГГЕР: Тройной клик по копирайту открывает вход для персонала -->
-            <p id="secretTrigger" style="cursor: default; user-select: none;">© 2026 Кофейня «СЮДА». За вкусным кофе.</p>
+            <p>© 2026 Кофейня «СЮДА». За вкусным кофе.</p>
             <p style="margin-top: 10px; font-size: 14px; font-weight: 600; color: #fff;">Будни: 7:00–22:00 · Выходные: 8:00–21:00</p>
         </div>
     </footer>
 
-    <!-- МОДАЛЬНОЕ ОКНО ПРОФИЛЯ (ГОСТИ) -->
+    <!-- МОДАЛЬНОЕ ОКНО (Профиль / Панель бариста / Панель владельца) -->
     <div class="modal" id="authModal">
         <div class="modal-content">
             <span class="close-btn" id="closeAuth">&times;</span>
             
+            <!-- ЭКРАН ВХОДА / РЕГИСТРАЦИИ -->
             <div id="authSection">
                 <h2>Профиль</h2>
                 <div class="tabs">
@@ -458,7 +450,10 @@
                 </form>
             </div>
 
+            <!-- РАБОЧИЙ ЭКРАН ПОСЛЕ ВХОДА -->
             <div id="dashboardSection" class="dashboard-content">
+                
+                <!-- 1. ГОСТЕВОЙ ПРОФИЛЬ (Лояльность) -->
                 <div id="loyaltyView" style="display: none;">
                     <h2 style="margin-bottom: 20px;">Ваш QR-код</h2>
                     <div id="qrcode"></div>
@@ -499,93 +494,75 @@
                         <h4>Доступен бесплатный напиток</h4>
                         <p>Вы собрали 7 стаканчиков. Просто покажите этот экран бариста.</p>
                     </div>
-
-                    <button class="btn" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 15px; width: 100%;" onclick="logout()">Выйти из аккаунта</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- АДМИНКА (ПАНЕЛЬ БАРИСТА) -->
-    <div class="modal" id="adminModal">
-        <div class="modal-content admin-panel">
-            <span class="close-btn" id="closeAdmin">&times;</span>
-            <h2 style="text-align: center;">Панель баристы</h2>
-            
-            <!-- ЭКРАН ВХОДА ДЛЯ ПЕРСОНАЛА -->
-            <div id="adminAuthSection">
-                <div class="input-group">
-                    <input type="tel" id="adminPhone" placeholder="Номер телефона сотрудника" maxlength="18">
-                </div>
-                <div class="input-group">
-                    <input type="password" id="adminPass" placeholder="Пароль сотрудника">
-                </div>
-                <button class="btn" onclick="loginStaff()">Войти</button>
-            </div>
-            
-            <!-- РАБОЧИЙ ЭКРАН БАРИСТА -->
-            <div id="adminWork" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <span style="font-size: 14px; color: var(--text-muted);">Вы вошли как: <b id="staffNameDisplay" style="color: var(--accent);"></b></span>
-                    <button onclick="logoutStaff()" style="background: none; border: none; color: var(--danger); cursor: pointer; font-size: 12px;">Выйти</button>
                 </div>
 
-                <div class="admin-search">
-                    <input type="text" id="searchPhone" placeholder="Номер (11 цифр) или Код (6 цифр)" maxlength="18">
-                    <button onclick="findUser()">Найти</button>
-                </div>
-                
-                <div id="userInfo" class="user-card">
-                    <div class="user-card-head">
-                        <b id="guestPhone">-</b>
+                <!-- 2. ПАНЕЛЬ БАРИСТЫ / ВЛАДЕЛЬЦА -->
+                <div id="staffView" class="staff-view">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                        <h2 style="margin: 0; font-size: 20px;">Панель баристы</h2>
+                        <span style="font-size: 12px; color: var(--text-muted);">Сотрудник: <b id="staffNameDisplay" style="color: var(--accent);"></b></span>
                     </div>
-                    <div class="user-stats">
-                        <div>Чашек: <b id="guestCups" style="color: var(--accent);">0</b> / 7</div>
-                        <div>Стрик: <b id="guestStreak" style="color: var(--fire);">0</b> / 4</div>
+
+                    <div class="admin-search">
+                        <input type="text" id="searchPhone" placeholder="Номер (11) или Код (6)" maxlength="18">
+                        <button onclick="findUser()">Найти</button>
                     </div>
                     
-                    <div id="adminStreakReward" style="display: none; margin-bottom: 15px; font-size: 15px; color: var(--fire);">
-                        Бонус за огонек: <b id="adminRewardText" style="color: #fff;"></b>
+                    <div id="userInfo" class="user-card">
+                        <div class="user-card-head">
+                            <b id="guestPhone">-</b>
+                        </div>
+                        <div class="user-stats">
+                            <div>Чашек: <b id="guestCups" style="color: var(--accent);">0</b> / 7</div>
+                            <div>Стрик: <b id="guestStreak" style="color: var(--fire);">0</b> / 4</div>
+                        </div>
+                        
+                        <div id="adminStreakReward" style="display: none; margin-bottom: 15px; font-size: 15px; color: var(--fire);">
+                            Бонус за огонек: <b id="adminRewardText" style="color: #fff;"></b>
+                        </div>
+                        
+                        <div class="admin-btn-group">
+                            <button class="btn-add-cup" onclick="addCup()">+1 Чашка</button>
+                            <button class="btn-add-streak" onclick="addStreak()">+1 День (Стрик)</button>
+                            <button class="btn-redeem" onclick="redeemFreeDrink()" style="display: none;" id="redeemBtn">Списать бесплатный (Чашка)</button>
+                            <button class="btn-redeem" onclick="redeemStreak()" style="display: none; background: var(--fire);" id="redeemStreakBtn">Списать бонус (Стрик)</button>
+                        </div>
                     </div>
-                    
-                    <div class="admin-btn-group">
-                        <button class="btn-add-cup" onclick="addCup()">+1 Чашка</button>
-                        <button class="btn-add-streak" onclick="addStreak()">+1 День (Стрик)</button>
-                        <button class="btn-redeem" onclick="redeemFreeDrink()" style="display: none;" id="redeemBtn">Списать бесплатный (Чашка)</button>
-                        <button class="btn-redeem" onclick="redeemStreak()" style="display: none; background: var(--fire);" id="redeemStreakBtn">Списать бонус (Стрик)</button>
+
+                    <!-- БЛОК УПРАВЛЕНИЯ ПЕРСОНАЛОМ (Только для владельца) -->
+                    <div id="ownerTools">
+                        <h3>Управление персоналом</h3>
+                        <div class="input-group">
+                            <input type="tel" id="newStaffPhone" placeholder="Номер нового бариста" maxlength="18">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="newStaffName" placeholder="Имя бариста">
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="newStaffPass" placeholder="Пароль для входа">
+                        </div>
+                        <button class="btn btn-small" style="width: 100%; margin-bottom: 15px;" onclick="addStaff()">Добавить бариста</button>
+                        
+                        <div class="staff-list">
+                            <h4 style="font-size: 14px; margin-bottom: 10px; color: #fff;">Список бариста:</h4>
+                            <div id="staffListContainer"></div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- БЛОК УПРАВЛЕНИЯ ПЕРСОНАЛОМ (ТОЛЬКО ДЛЯ ВЛАДЕЛЬЦА) -->
-                <div id="ownerTools">
-                    <h3>Управление персоналом</h3>
-                    <div class="input-group">
-                        <input type="tel" id="newStaffPhone" placeholder="Номер нового бариста" maxlength="18">
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="newStaffName" placeholder="Имя бариста">
-                    </div>
-                    <div class="input-group">
-                        <input type="password" id="newStaffPass" placeholder="Пароль для входа">
-                    </div>
-                    <button class="btn btn-small" onclick="addStaff()">Добавить бариста</button>
-                    
-                    <div class="staff-list">
-                        <h4 style="font-size: 14px; margin-bottom: 10px; color: #fff;">Список бариста:</h4>
-                        <div id="staffListContainer"></div>
-                    </div>
-                </div>
+                <!-- КНОПКА ВЫХОДА -->
+                <button id="logoutBtn" class="btn" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 25px; width: 100%; display: none;" onclick="logout()">Выйти из аккаунта</button>
             </div>
         </div>
     </div>
 
     <script>
-        // ИНИЦИАЛИЗАЦИЯ БАЗЫ ДАННЫХ С РОЛЯМИ
+        // ИНИЦИАЛИЗАЦИЯ БАЗЫ (Роли: owner, barista, guest)
         if (!localStorage.getItem('sudacoffee_db')) {
             const initialDB = {
-                // Владелец
-                "79991112233": { password: "123", name: "Иван (Владелец)", cups: 2, streak: 1, shortCode: "123456", streakReward: null, role: "owner" },
-                // Тестовый бариста (можно удалить)
+                // Ваш аккаунт владельца
+                "79991112233": { password: "123", name: "Иван (Владелец)", cups: 0, streak: 0, shortCode: "123456", streakReward: null, role: "owner" },
+                // Тестовый аккаунт бариста
                 "79990001122": { password: "1111", name: "Аня (Бариста)", cups: 0, streak: 0, shortCode: "654321", streakReward: null, role: "barista" }
             };
             localStorage.setItem('sudacoffee_db', JSON.stringify(initialDB));
@@ -611,36 +588,33 @@
             return "Альтернативное молоко";
         }
 
-        // ==========================================
-        // ГОСТЕВОЙ ПРОФИЛЬ
-        // ==========================================
         const authModal = document.getElementById('authModal');
         const openAuthBtn = document.getElementById('openAuth');
         const closeAuthBtn = document.getElementById('closeAuth');
         const authSection = document.getElementById('authSection');
         const dashboardSection = document.getElementById('dashboardSection');
         const qrcodeContainer = document.getElementById('qrcode');
+        const logoutBtn = document.getElementById('logoutBtn');
         
         let currentPhone = null;
         let currentName = null;
+        let currentRole = null;
         let qrcodeInstance = null;
         let isLoginMode = true;
-        let modalMode = 'loyalty'; 
 
-        function openModal(mode) {
-            modalMode = mode;
+        function openModal() {
             authModal.classList.add('active');
-            
             if (currentPhone) {
                 showDashboard(); 
             } else {
                 authSection.style.display = 'block';
                 dashboardSection.classList.remove('active');
+                logoutBtn.style.display = 'none';
             }
         }
 
-        openAuthBtn.addEventListener('click', () => openModal('profile'));
-        document.getElementById('openLoyaltyFromHero').addEventListener('click', () => openModal('loyalty'));
+        openAuthBtn.addEventListener('click', openModal);
+        document.getElementById('openLoyaltyFromHero').addEventListener('click', openModal);
         closeAuthBtn.addEventListener('click', () => authModal.classList.remove('active'));
 
         function switchTab(mode) {
@@ -674,10 +648,12 @@
             const db = getDB();
 
             if (isLoginMode) {
-                if (!db[phone]) return alert("Гость не найден. Зарегистрируйтесь.");
+                if (!db[phone]) return alert("Пользователь не найден. Зарегистрируйтесь.");
                 if (db[phone].password !== pass) return alert("Неверный пароль!");
+                
                 currentPhone = phone;
                 currentName = db[phone].name || 'Гость';
+                currentRole = db[phone].role || 'guest'; // По умолчанию - гость
 
                 if (!db[phone].shortCode) {
                     db[phone].shortCode = generateUniqueShortCode(db);
@@ -700,6 +676,7 @@
                 saveDB(db);
                 currentPhone = phone;
                 currentName = nameVal;
+                currentRole = "guest";
             }
 
             openAuthBtn.textContent = currentName;
@@ -711,13 +688,34 @@
         function showDashboard() {
             authSection.style.display = 'none';
             dashboardSection.classList.add('active');
+            logoutBtn.style.display = 'block';
 
             const db = getDB();
             const user = db[currentPhone];
 
-            if (modalMode === 'loyalty') {
+            // СКРЫВАЕМ ВСЕ ЭКРАНЫ ПО УМОЛЧАНИЮ
+            document.getElementById('loyaltyView').style.display = 'none';
+            document.getElementById('profileView').style.display = 'none';
+            document.getElementById('staffView').style.display = 'none';
+
+            // РАСПРЕДЕЛЕНИЕ ПО РОЛЯМ
+            if (currentRole === 'owner' || currentRole === 'barista') {
+                // ВХОД ДЛЯ ПЕРСОНАЛА
+                document.getElementById('staffView').style.display = 'block';
+                document.getElementById('staffNameDisplay').textContent = currentName;
+                
+                if (currentRole === 'owner') {
+                    document.getElementById('ownerTools').style.display = 'block';
+                    renderStaffList();
+                } else {
+                    document.getElementById('ownerTools').style.display = 'none';
+                }
+            } else {
+                // ВХОД ДЛЯ ГОСТЯ
                 document.getElementById('loyaltyView').style.display = 'block';
-                document.getElementById('profileView').style.display = 'none';
+                document.getElementById('profileView').style.display = 'block';
+
+                document.getElementById('greetingTitle').textContent = `Здравствуйте, ${currentName}!`;
 
                 if (qrcodeInstance) qrcodeInstance.clear();
                 qrcodeContainer.innerHTML = ''; 
@@ -728,11 +726,6 @@
                 });
 
                 document.getElementById('fallbackCode').textContent = user.shortCode || '000000';
-            } else {
-                document.getElementById('loyaltyView').style.display = 'none';
-                document.getElementById('profileView').style.display = 'block';
-
-                document.getElementById('greetingTitle').textContent = `Здравствуйте, ${currentName}!`;
 
                 const cupsContainer = document.getElementById('cupsContainer');
                 cupsContainer.innerHTML = '';
@@ -772,12 +765,16 @@
         function logout() {
             currentPhone = null;
             currentName = null;
+            currentRole = null;
             openAuthBtn.textContent = 'Профиль';
             openAuthBtn.classList.remove('logged-in');
             authModal.classList.remove('active');
             document.getElementById('loginForm').reset();
             authSection.style.display = 'block';
             dashboardSection.classList.remove('active');
+            logoutBtn.style.display = 'none';
+            document.getElementById('userInfo').classList.remove('active');
+            document.getElementById('searchPhone').value = '';
             switchTab('login');
             if (qrcodeInstance) {
                 qrcodeInstance.clear();
@@ -786,139 +783,8 @@
         }
 
         // ==========================================
-        // ПАНЕЛЬ БАРИСТЫ И УПРАВЛЕНИЕ
+        // ФУНКЦИИ ДЛЯ ПАНЕЛИ БАРИСТЫ
         // ==========================================
-        const adminModal = document.getElementById('adminModal');
-        let currentStaffPhone = null;
-
-        // СЕКРЕТНЫЙ ВХОД (Тройной клик по копирайту)
-        let clickCount = 0;
-        let clickTimer;
-        document.getElementById('secretTrigger').addEventListener('click', () => {
-            clickCount++;
-            clearTimeout(clickTimer);
-            clickTimer = setTimeout(() => { clickCount = 0; }, 800); // Сброс, если прошло больше 0.8 сек
-            
-            if (clickCount === 3) {
-                clickCount = 0;
-                openAdminLogin();
-            }
-        });
-
-        function openAdminLogin() {
-            adminModal.classList.add('active');
-            document.getElementById('adminAuthSection').style.display = 'block';
-            document.getElementById('adminWork').style.display = 'none';
-            document.getElementById('adminPhone').value = '';
-            document.getElementById('adminPass').value = '';
-        }
-
-        document.getElementById('closeAdmin').addEventListener('click', () => adminModal.classList.remove('active'));
-
-        // Авторизация персонала
-        function loginStaff() {
-            const phone = document.getElementById('adminPhone').value.replace(/\D/g, '');
-            const pass = document.getElementById('adminPass').value;
-            const db = getDB();
-
-            if (!db[phone]) return alert("Сотрудник не найден.");
-            if (db[phone].password !== pass) return alert("Неверный пароль!");
-            
-            if (db[phone].role !== 'owner' && db[phone].role !== 'barista') {
-                return alert("У вас нет прав доступа к панели бариста.");
-            }
-
-            currentStaffPhone = phone;
-            document.getElementById('staffNameDisplay').textContent = db[phone].name;
-            
-            document.getElementById('adminAuthSection').style.display = 'none';
-            document.getElementById('adminWork').style.display = 'block';
-
-            // Показываем инструменты владельца только если роль 'owner'
-            if (db[phone].role === 'owner') {
-                document.getElementById('ownerTools').style.display = 'block';
-                renderStaffList();
-            } else {
-                document.getElementById('ownerTools').style.display = 'none';
-            }
-        }
-
-        function logoutStaff() {
-            currentStaffPhone = null;
-            adminModal.classList.remove('active');
-            document.getElementById('userInfo').classList.remove('active');
-            document.getElementById('searchPhone').value = '';
-        }
-
-        // УПРАВЛЕНИЕ ПЕРСОНАЛОМ (Доступно только Владельцу)
-        function addStaff() {
-            if (getDB()[currentStaffPhone].role !== 'owner') return;
-
-            const phone = document.getElementById('newStaffPhone').value.replace(/\D/g, '');
-            const name = document.getElementById('newStaffName').value.trim();
-            const pass = document.getElementById('newStaffPass').value;
-            const db = getDB();
-
-            if (phone.length !== 11) return alert("Введите 11 цифр номера.");
-            if (!name) return alert("Введите имя бариста.");
-            if (pass.length < 4) return alert("Пароль минимум 4 символа.");
-            if (db[phone]) return alert("Этот номер уже занят в системе!");
-
-            db[phone] = { 
-                password: pass, 
-                name: name, 
-                cups: 0, 
-                streak: 0, 
-                shortCode: generateUniqueShortCode(db), 
-                streakReward: null, 
-                role: "barista" 
-            };
-            saveDB(db);
-            
-            document.getElementById('newStaffPhone').value = '';
-            document.getElementById('newStaffName').value = '';
-            document.getElementById('newStaffPass').value = '';
-            
-            alert(`Бариста ${name} успешно добавлен!`);
-            renderStaffList();
-        }
-
-        function removeStaff(phone) {
-            if (getDB()[currentStaffPhone].role !== 'owner') return;
-            if (confirm("Вы уверены, что хотите снять права бариста с этого номера?")) {
-                const db = getDB();
-                if (db[phone] && db[phone].role === 'barista') {
-                    delete db[phone]; // Удаляем аккаунт бариста
-                    saveDB(db);
-                    renderStaffList();
-                }
-            }
-        }
-
-        function renderStaffList() {
-            const db = getDB();
-            const container = document.getElementById('staffListContainer');
-            container.innerHTML = '';
-            
-            let hasStaff = false;
-            for (const phone in db) {
-                if (db[phone].role === 'barista') {
-                    hasStaff = true;
-                    const item = document.createElement('div');
-                    item.className = 'staff-item';
-                    item.innerHTML = `
-                        <span>${db[phone].name} (${formatPhone(phone)})</span>
-                        <button class="btn-remove-staff" onclick="removeStaff('${phone}')">Удалить</button>
-                    `;
-                    container.appendChild(item);
-                }
-            }
-            if (!hasStaff) {
-                container.innerHTML = '<div style="font-size: 12px; color: var(--text-muted);">Список пуст</div>';
-            }
-        }
-
-        // РАБОЧИЕ ФУНКЦИИ БАРИСТЫ
         let searchedPhone = null;
 
         function findUser() {
@@ -1038,6 +904,76 @@
                 alert('Бонус за стрик выдан, счетчик огоньков обнулен!');
             } else {
                 alert('У гостя еще нет 4-х дней подряд.');
+            }
+        }
+
+        // ==========================================
+        // УПРАВЛЕНИЕ ПЕРСОНАЛОМ (ДЛЯ ВЛАДЕЛЬЦА)
+        // ==========================================
+        function addStaff() {
+            if (currentRole !== 'owner') return;
+
+            const phone = document.getElementById('newStaffPhone').value.replace(/\D/g, '');
+            const name = document.getElementById('newStaffName').value.trim();
+            const pass = document.getElementById('newStaffPass').value;
+            const db = getDB();
+
+            if (phone.length !== 11) return alert("Введите 11 цифр номера.");
+            if (!name) return alert("Введите имя бариста.");
+            if (pass.length < 4) return alert("Пароль минимум 4 символа.");
+            if (db[phone]) return alert("Этот номер уже занят в системе!");
+
+            db[phone] = { 
+                password: pass, 
+                name: name, 
+                cups: 0, 
+                streak: 0, 
+                shortCode: generateUniqueShortCode(db), 
+                streakReward: null, 
+                role: "barista" 
+            };
+            saveDB(db);
+            
+            document.getElementById('newStaffPhone').value = '';
+            document.getElementById('newStaffName').value = '';
+            document.getElementById('newStaffPass').value = '';
+            
+            alert(`Бариста ${name} успешно добавлен!`);
+            renderStaffList();
+        }
+
+        function removeStaff(phone) {
+            if (currentRole !== 'owner') return;
+            if (confirm("Вы уверены, что хотите снять права бариста с этого номера?")) {
+                const db = getDB();
+                if (db[phone] && db[phone].role === 'barista') {
+                    delete db[phone];
+                    saveDB(db);
+                    renderStaffList();
+                }
+            }
+        }
+
+        function renderStaffList() {
+            const db = getDB();
+            const container = document.getElementById('staffListContainer');
+            container.innerHTML = '';
+            
+            let hasStaff = false;
+            for (const phone in db) {
+                if (db[phone].role === 'barista') {
+                    hasStaff = true;
+                    const item = document.createElement('div');
+                    item.className = 'staff-item';
+                    item.innerHTML = `
+                        <span>${db[phone].name} (${formatPhone(phone)})</span>
+                        <button class="btn-remove-staff" onclick="removeStaff('${phone}')">Удалить</button>
+                    `;
+                    container.appendChild(item);
+                }
+            }
+            if (!hasStaff) {
+                container.innerHTML = '<div style="font-size: 12px; color: var(--text-muted);">Список пуст</div>';
             }
         }
     </script>
