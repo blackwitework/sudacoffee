@@ -1,4 +1,4 @@
-ё<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Golos+Text:wght@400;600;800&family=Onest:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- ПОДКЛЮЧАЕМ БИБЛИОТЕКУ ДЛЯ СКАНЕРА QR -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     
     <style>
         :root {
@@ -157,10 +160,28 @@
         /* ===== SCANNER MODAL ===== */
         .scanner-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
         .scanner-modal.active { display: flex; }
-        .scanner-box { width: 100%; max-width: 400px; aspect-ratio: 1; border: 2px dashed var(--accent); border-radius: 24px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; padding: 20px; position: relative; overflow: hidden; }
-        .scanner-box::before { content: ''; position: absolute; top: 10%; left: 10%; right: 10%; height: 2px; background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: scan 2s infinite linear; }
-        @keyframes scan { 0% { top: 10%; } 50% { top: 90%; } 100% { top: 10%; } }
-        .close-scanner { margin-top: 30px; background: transparent; color: white; border: 1px solid white; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 16px; }
+        
+        /* Контейнер для камеры */
+        #reader { 
+            width: 100%; 
+            max-width: 400px; 
+            border-radius: 24px; 
+            overflow: hidden; 
+            border: 2px solid var(--accent);
+        }
+        /* Стилизуем кнопки внутри сканера */
+        #reader button {
+            background-color: var(--accent) !important;
+            color: white !important;
+            border: none !important;
+            padding: 10px 20px !important;
+            border-radius: 8px !important;
+            margin: 10px !important;
+            cursor: pointer;
+        }
+        
+        .close-scanner { margin-top: 30px; background: transparent; color: white; border: 1px solid white; padding: 12px 40px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 16px; transition: 0.2s; }
+        .close-scanner:hover { background: white; color: black; }
 
         /* ===== АДАПТИВ ===== */
         @media (max-width: 900px) {
@@ -378,9 +399,7 @@
 
     <!-- МОДАЛКА СКАНЕРА -->
     <div class="scanner-modal" id="scannerModal">
-        <div class="scanner-box">
-            <p style="font-size: 18px; font-weight: 600; color: #fff;">Наведите камеру на QR-код клиента</p>
-        </div>
+        <div id="reader"></div>
         <button class="close-scanner" onclick="closeScanner()">Отмена</button>
     </div>
 
@@ -392,22 +411,51 @@
         ];
 
         let currentGuest = null;
+        let html5QrCode = null; // Переменная для хранения экземпляра сканера
 
-        // Сканер
+        // ОТКРЫТИЕ СКАНЕРА
         function openScanner() {
             document.getElementById('scannerModal').classList.add('active');
-            setTimeout(() => {
-                if(document.getElementById('scannerModal').classList.contains('active')) {
-                    closeScanner();
-                    document.getElementById('searchInput').value = "123456";
-                    searchGuest();
-                    alert("QR-код успешно распознан!");
+            
+            // Инициализируем сканер в контейнере #reader
+            html5QrCode = new Html5Qrcode("reader");
+            
+            const config = { 
+                fps: 10, 
+                qrbox: { width: 250, height: 250 } 
+            };
+
+            // Запускаем камеру (facingMode: environment - выбираем заднюю камеру)
+            html5QrCode.start(
+                { facingMode: "environment" }, 
+                config,
+                (decodedText, decodedResult) => {
+                    // УСПЕШНОЕ СКАНИРОВАНИЕ
+                    closeScanner(); // Останавливаем камеру
+                    document.getElementById('searchInput').value = decodedText; // Вставляем текст в поиск
+                    searchGuest(); // Ищем гостя
+                },
+                (errorMessage) => {
+                    // Игнорируем ошибки парсинга (они возникают каждую миллисекунду, пока код не найден)
                 }
-            }, 2000);
+            ).catch((err) => {
+                // ОШИБКА ДОСТУПА К КАМЕРЕ
+                alert("Не удалось получить доступ к камере. Пожалуйста, разрешите доступ в настройках браузера или используйте поиск по номеру.");
+                console.error(err);
+                closeScanner();
+            });
         }
 
+        // ЗАКРЫТИЕ СКАНЕРА
         function closeScanner() {
             document.getElementById('scannerModal').classList.remove('active');
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    html5QrCode.clear();
+                }).catch(err => {
+                    console.log("Ошибка при остановке сканера", err);
+                });
+            }
         }
 
         // Поиск
