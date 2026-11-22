@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СЮДА — Панель бариста</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&family=Golos+Text:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #050505;
+            --surface: #141414;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --accent: #8A2BE2;
+            --accent-hover: #9b4dff;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --fire: #ff7b00;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: 'Golos Text', sans-serif; 
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 500px; /* Ограничиваем ширину для удобства на планшетах */
+            background: var(--surface);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: fit-content;
+        }
+
+        /* Шапка */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+        }
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+        }
+        .staff-info {
+            text-align: right;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .staff-info b {
+            color: var(--accent);
+            display: block;
+            font-size: 14px;
+        }
+        .logout-btn {
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+        .logout-btn:hover { background: var(--danger); color: white; }
+
+        /* Поиск */
+        .search-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+        .input-row input {
+            flex: 1;
+            padding: 15px;
+            background: var(--bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            font-family: 'Golos Text', sans-serif;
+        }
+        .input-row input:focus { border-color: var(--accent); }
+        
+        .btn-search {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 16px;
+        }
+        .btn-search:hover { background: var(--accent-hover); }
+
+        .btn-scan {
+            background: rgba(138, 43, 226, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+        .btn-scan:hover { background: var(--accent); color: white; }
+
+        /* Карточка гостя */
+        .guest-card {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+        .guest-card.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .guest-header {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+        .guest-name { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+        .guest-details { font-size: 13px; color: var(--text-muted); font-family: monospace; }
+
+        /* Стаканчики и Огоньки */
+        .stats-block {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stats-title { font-size: 14px; font-weight: 800; margin-bottom: 15px; color: #fff; }
+        
+        .cups-container { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .cup-icon { width: 32px; height: 32px; fill: rgba(255, 255, 255, 0.1); transition: 0.3s; }
+        .cup-icon.filled { fill: var(--accent); filter: drop-shadow(0 0 5px rgba(138,43,226,0.5)); }
+
+        .flame-container { display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .flame-icon { width: 32px; height: 32px; fill: #444; transition: 0.3s; }
+        .flame-icon.active { fill: var(--fire); filter: drop-shadow(0 0 10px rgba(255,123,0,0.5)); }
+        .streak-text { font-weight: 800; font-size: 20px; color: #fff; margin-left: 10px; }
+
+        /* Плашка с бонусом */
+        .reward-notice {
+            display: none;
+            background: rgba(255, 123, 0, 0.1);
+            border: 1px solid var(--fire);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        .reward-notice.active { display: block; }
+        .reward-notice h4 { color: var(--fire); font-size: 16px; margin-bottom: 4px; }
+        .reward-notice p { font-size: 14px; color: #fff; }
+
+        /* Кнопки действий */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .action-buttons button {
+            padding: 18px 10px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Golos Text', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .action-buttons button:active { transform: scale(0.98); }
+        
+        .btn-add-cup { background: var(--accent); color: white; grid-column: span 2; }
+        .btn-add-cup:hover { background: var(--accent-hover); }
+        
+        .btn-add-streak { background: var(--fire); color: white; }
+        .btn-add-streak:hover { background: #ff922b; }
+
+        .btn-redeem { background: var(--success); color: #000; grid-column: span 2; }
+        .btn-redeem:hover { background: #27ae60; }
+        
+        .btn-redeem-streak { background: var(--fire); color: white; grid-column: span 2; }
+        .btn-redeem-streak:hover { background: #ff922b; }
+
+        /* Модалка сканера */
+        .scanner-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .scanner-modal.active { display: flex; }
+        .scanner-box {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1;
+            border: 2px dashed var(--accent);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+        .scanner-box::before {
+            content: '';
+            position: absolute;
+            top: 10%; left: 10%; right: 10%; height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            animation: scan 2s infinite linear;
+        }
+        @keyframes scan {
+            0% { top: 10%; }
+            50% { top: 90%; }
+            100% { top: 10%; }
+        }
+        .close-scanner {
+            margin-top: 20px;
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Шапка -->
+        <div class="header">
+            <h1>Панель бариста</h1>
+            <div class="staff-info">
+                Сотрудник:
+                <b>Аня</b>
+                <button class="logout-btn">Выйти</button>
+            </div>
+        </div>
+
+        <!-- Поиск -->
+        <div class="search-section">
+            <div class="input-row">
+                <input type="text" id="searchInput" placeholder="Номер или 6-значный код" maxlength="18">
+                <button class="btn-search" onclick="searchGuest()">Найти</button>
+            </div>
+            <button class="btn-scan" onclick="openScanner()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><rect x="7" y="7" width="10" height="10"></rect></svg>
+                Сканировать QR
+            </button>
+        </div>
+
+        <!-- Карточка гостя (скрыта по умолчанию) -->
+        <div class="guest-card" id="guestCard">
+            
+            <div class="guest-header">
+                <div class="guest-name" id="gName">Иван</div>
+                <div class="guest-details" id="gDetails">+7 999 111-22-33 • Код: 123456</div>
+            </div>
+
+            <div class="stats-block">
+                <div class="stats-title">8-й кофе в подарок</div>
+                <div class="cups-container" id="cupsContainer"></div>
+                
+                <div class="stats-title" style="margin-top: 25px;">Огонёк (4 дня подряд)</div>
+                <div class="flame-container">
+                    <svg class="flame-icon" id="f1" viewBox="0 0 24 24"><path d="M12,23A9,9 0 0,1 7.16,6.66C8.32,8.15 9.21,9 10.5,10.5C10.5,10.5 12,8 12,4A10.85,10.85 0 0,1 15.72,7.67C17.17,10 18,12.5 18,15C18,19.42 14.88,23 12,23M12,10.5A4.5,4.5 0 0,0 9.87,14.34C9.55,15.16 9.32,16.07 9.32,17A2.68,2.68 0 0,0 12,19.68A2.68,2.68 0 0,0 14.68,17C14.68,15.5 14.08,14.16 13.13,13.18C13.13,13.18 12.83,14.26 11.34,14.26C10.58,14.26 9.89,13.6 9.55,12.82A4.57,4.57 0 0,1 12,10.5Z"/></svg>
+                    <svg class="flame-icon" id="f2" viewBox="0 0 24 24"><path d="M12,23A9,9 0 0,1 7.16,6.66C8.32,8.15 9.21,9 10.5,10.5C10.5,10.5 12,8 12,4A10.85,10.85 0 0,1 15.72,7.67C17.17,10 18,12.5 18,15C18,19.42 14.88,23 12,23M12,10.5A4.5,4.5 0 0,0 9.87,14.34C9.55,15.16 9.32,16.07 9.32,17A2.68,2.68 0 0,0 12,19.68A2.68,2.68 0 0,0 14.68,17C14.68,15.5 14.08,14.16 13.13,13.18C13.13,13.18 12.83,14.26 11.34,14.26C10.58,14.26 9.89,13.6 9.55,12.82A4.57,4.57 0 0,1 12,10.5Z"/></svg>
+                    <svg class="flame-icon" id="f3" viewBox="0 0 24 24"><path d="M12,23A9,9 0 0,1 7.16,6.66C8.32,8.15 9.21,9 10.5,10.5C10.5,10.5 12,8 12,4A10.85,10.85 0 0,1 15.72,7.67C17.17,10 18,12.5 18,15C18,19.42 14.88,23 12,23M12,10.5A4.5,4.5 0 0,0 9.87,14.34C9.55,15.16 9.32,16.07 9.32,17A2.68,2.68 0 0,0 12,19.68A2.68,2.68 0 0,0 14.68,17C14.68,15.5 14.08,14.16 13.13,13.18C13.13,13.18 12.83,14.26 11.34,14.26C10.58,14.26 9.89,13.6 9.55,12.82A4.57,4.57 0 0,1 12,10.5Z"/></svg>
+                    <svg class="flame-icon" id="f4" viewBox="0 0 24 24"><path d="M12,23A9,9 0 0,1 7.16,6.66C8.32,8.15 9.21,9 10.5,10.5C10.5,10.5 12,8 12,4A10.85,10.85 0 0,1 15.72,7.67C17.17,10 18,12.5 18,15C18,19.42 14.88,23 12,23M12,10.5A4.5,4.5 0 0,0 9.87,14.34C9.55,15.16 9.32,16.07 9.32,17A2.68,2.68 0 0,0 12,19.68A2.68,2.68 0 0,0 14.68,17C14.68,15.5 14.08,14.16 13.13,13.18C13.13,13.18 12.83,14.26 11.34,14.26C10.58,14.26 9.89,13.6 9.55,12.82A4.57,4.57 0 0,1 12,10.5Z"/></svg>
+                    <span class="streak-text" id="gStreakText">0/4</span>
+                </div>
+            </div>
+
+            <!-- Плашка бонуса -->
+            <div class="reward-notice" id="rewardNotice">
+                <h4>Сгорел стрик!</h4>
+                <p>Доступен бонус: <b id="gRewardText">Сироп</b></p>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="action-buttons">
+                <button class="btn-add-cup" onclick="addCup()">+1 Чашка</button>
+                <button class="btn-add-streak" onclick="addStreak()">+1 День</button>
+                
+                <button class="btn-redeem" id="btnRedeemCup" style="display: none;" onclick="redeemCup()">Списать 8-й кофе</button>
+                <button class="btn-redeem-streak" id="btnRedeemStreak" style="display: none;" onclick="redeemStreak()">Списать бонус (Стрик)</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Модалка Сканера -->
+    <div class="scanner-modal" id="scannerModal">
+        <div class="scanner-box">
+            <p>Наведите камеру на QR-код гостя</p>
+        </div>
+        <button class="close-scanner" onclick="closeScanner()">Отмена</button>
+    </div>
+
+    <script>
+        // === БАЗА ДАННЫХ (ТЕСТОВАЯ) ===
+        // Для теста 24-часового лимита, у Ивана в lastStreakUpdate стоит время СЕЙЧАС. 
+        // Поэтому при нажатии "+1 День" выскочит ошибка. 
+        // Чтобы обнулить лимит, откройте консоль (F12) и введите: db[0].lastStreakUpdate = 0;
+        let db = [
+            { 
+                phone: "79991112233", 
+                code: "123456", 
+                name: "Иван", 
+                cups: 7, 
+                streak: 3, 
+                lastStreakUpdate: Date.now(), // Текущее время (лимит 24 часа)
+                reward: null 
+            },
+            { 
+                phone: "79000000000", 
+                code: "999999", 
+                name: "Александр", 
+                cups: 2, 
+                streak: 4, 
+                lastStreakUpdate: 0, 
+                reward: "Дополнительный шот" 
+            }
+        ];
+
+        let currentGuest = null;
+
+        // Функции интерфейса
+        function openScanner() {
+            document.getElementById('scannerModal').classList.add('active');
+            // Имитация успешного сканирования через 2 секунды
+            setTimeout(() => {
+                if(document.getElementById('scannerModal').classList.contains('active')) {
+                    closeScanner();
+                    document.getElementById('searchInput').value = "123456";
+                    searchGuest();
+                    alert("QR-код успешно распознан!");
+                }
+            }, 2000);
+        }
+
+        function closeScanner() {
+            document.getElementById('scannerModal').classList.remove('active');
+        }
+
+        // Поиск гостя
+        function searchGuest() {
+            const input = document.getElementById('searchInput').value.trim().replace(/\D/g, '');
+            
+            if (input.length !== 11 && input.length !== 6) {
+                alert("Введите корректный номер (11 цифр) или код (6 цифр).");
+                return;
+            }
+
+            // Ищем в базе
+            currentGuest = db.find(user => user.phone === input || user.code === input);
+
+            if (currentGuest) {
+                document.getElementById('guestCard').classList.add('active');
+                renderGuestData();
+            } else {
+                alert("Гость не найден!");
+                document.getElementById('guestCard').classList.remove('active');
+            }
+        }
+
+        // Отрисовка данных гостя
+        function renderGuestData() {
+            if (!currentGuest) return;
+
+            // Имя и телефон
+            document.getElementById('gName').textContent = currentGuest.name;
+            document.getElementById('gDetails').textContent = `+${currentGuest.phone} • Код: ${currentGuest.code}`;
+
+            // Стаканчики (7 штук)
+            const cupsContainer = document.getElementById('cupsContainer');
+            cupsContainer.innerHTML = '';
+            for (let i = 0; i < 7; i++) {
+                const svg = `<svg class="cup-icon ${i < currentGuest.cups ? 'filled' : ''}" viewBox="0 0 24 24"><path d="M19,4h-2.1c0-1.1-0.9-2-2-2h-5.8c-1.1,0-2,0.9-2,2H5C4.4,4,4,4.4,4,5v1c0,0.6,0.4,1,1,1h0.6L7,20.6c0,0.2,0.2,0.4,0.4,0.4h9.2c0.2,0,0.4-0.2,0.4-0.4L18.4,7H19c0.6,0,1-0.4,1-1V5C20,4.4,19.6,4,19,4z M13,4h-2V3h2V4z M16.5,19h-9L6.5,7h11L16.5,19z"/></svg>`;
+                cupsContainer.innerHTML += svg;
+            }
+
+            // Огоньки (Стрик)
+            document.getElementById('f1').classList.toggle('active', currentGuest.streak >= 1);
+            document.getElementById('f2').classList.toggle('active', currentGuest.streak >= 2);
+            document.getElementById('f3').classList.toggle('active', currentGuest.streak >= 3);
+            document.getElementById('f4').classList.toggle('active', currentGuest.streak >= 4);
+            document.getElementById('gStreakText').textContent = `${currentGuest.streak}/4`;
+
+            // Проверка плашки бонуса
+            const rewardNotice = document.getElementById('rewardNotice');
+            if (currentGuest.streak >= 4 && currentGuest.reward) {
+                rewardNotice.classList.add('active');
+                document.getElementById('gRewardText').textContent = currentGuest.reward;
+            } else {
+                rewardNotice.classList.remove('active');
+            }
+
+            // Кнопки списания
+            document.getElementById('btnRedeemCup').style.display = currentGuest.cups === 7 ? 'block' : 'none';
+            document.getElementById('btnRedeemStreak').style.display = currentGuest.streak >= 4 ? 'block' : 'none';
+        }
+
+        // Кнопки действий
+        function addCup() {
+            if (currentGuest.cups >= 7) {
+                alert("У гостя уже 7 из 7. Сначала спишите бесплатный напиток!");
+                return;
+            }
+            currentGuest.cups++;
+            renderGuestData();
+            if(currentGuest.cups === 7) alert("Гость собрал 7 чашек! Доступен 8-й кофе.");
+        }
+
+        function addStreak() {
+            if (currentGuest.streak >= 4) {
+                alert("У гостя уже есть бонус за стрик! Сначала спишите его.");
+                return;
+            }
+
+            // ПРОВЕРКА 24 ЧАСОВ
+            const now = Date.now();
+            const oneDay = 24 * 60 * 60 * 1000;
+            if (currentGuest.lastStreakUpdate && (now - currentGuest.lastStreakUpdate < oneDay)) {
+                alert("Ошибка: Стрик уже начислен сегодня! Повторно можно будет начислить только завтра.");
+                return;
+            }
+
+            currentGuest.streak++;
+            currentGuest.lastStreakUpdate = now;
+
+            if (currentGuest.streak === 4) {
+                // Рандомайзер
+                const rand = Math.random();
+                if (rand < 0.5) currentGuest.reward = "Сироп (любой)";
+                else if (rand < 0.8) currentGuest.reward = "Дополнительный шот";
+                else currentGuest.reward = "Альтернативное молоко";
+                
+                alert(`Стрик собран! Выпал бонус: ${currentGuest.reward}`);
+            }
+            renderGuestData();
+        }
+
+        function redeemCup() {
+            if (currentGuest.cups === 7) {
+                currentGuest.cups = 0;
+                renderGuestData();
+                alert("Бесплатный напиток выдан, стаканчики обнулены!");
+            }
+        }
+
+        function redeemStreak() {
+            if (currentGuest.streak >= 4) {
+                currentGuest.streak = 0;
+                currentGuest.reward = null;
+                renderGuestData();
+                alert("Бонус выдан, огоньки обнулены!");
+            }
+        }
+    </script>
+</body>
+</html>
