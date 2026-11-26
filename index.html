@@ -78,36 +78,10 @@
         .about-content h2 span { color: var(--accent); }
         .about-content p { color: var(--text-muted); font-size: 16px; line-height: 1.7; margin-bottom: 20px; }
         
-        /* === СТАТИСТИКА === */
-        .about-stats { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 30px; 
-            margin-top: 40px; 
-        }
-        .stat-item { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: flex-start;
-            text-align: left;
-        }
-        .stat-item b { 
-            font-family: 'Montserrat', sans-serif; 
-            font-size: 22px;
-            font-weight: 900; 
-            color: var(--accent); 
-            line-height: 1.1;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-        .stat-item span { 
-            font-size: 11px; 
-            color: var(--text-muted); 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            line-height: 1.5;
-        }
+        .about-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: 40px; }
+        .stat-item { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+        .stat-item b { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; color: var(--accent); line-height: 1.1; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .stat-item span { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; line-height: 1.5; }
         
         .about-image {
             background: linear-gradient(135deg, #2a1642 0%, #141414 100%);
@@ -158,13 +132,11 @@
 
         /* ===== FOOTER ===== */
         footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--text-muted); font-size: 14px; }
-        .admin-link { color: #222; cursor: pointer; font-size: 12px; margin-top: 15px; display: inline-block; transition: 0.3s; }
-        .admin-link:hover { color: var(--accent); }
 
         /* ===== MODALS ===== */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; }
         .modal.active { display: flex; }
-        .modal-content { background: var(--surface); padding: 40px 30px; border-radius: 24px; width: 100%; max-width: 420px; border: 1px solid rgba(255,255,255,0.1); position: relative; text-align: center; }
+        .modal-content { background: var(--surface); padding: 40px 30px; border-radius: 24px; width: 100%; max-width: 440px; border: 1px solid rgba(255,255,255,0.1); position: relative; text-align: center; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; color: var(--text-muted); cursor: pointer; }
         .close-btn:hover { color: white; }
         .modal-content h2 { font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; margin-bottom: 25px; }
@@ -224,8 +196,9 @@
         }
 
         /* ===== ADMIN PANEL ===== */
-        .admin-panel { text-align: left; }
-        .admin-panel h2 { text-align: center; }
+        .admin-view { display: none; text-align: left; }
+        .admin-view.active { display: block; }
+        .admin-view h2 { text-align: center; }
         .admin-search { display: flex; gap: 10px; margin-bottom: 20px; }
         .admin-search input { flex: 1; padding: 12px; background: var(--bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; outline: none; }
         .admin-search button { background: var(--accent); border: none; color: white; padding: 0 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
@@ -460,7 +433,7 @@
         <div class="container">
             <p>© 2026 Кофейня «СЮДА». За вкусным кофе.</p>
             <p style="margin-top: 10px; font-size: 14px; font-weight: 600; color: #fff;">Будни: 7:00–22:00 · Выходные: 8:00–21:00</p>
-            <span class="admin-link" id="openAdminPanel">Вход для персонала (тест)</span>
+            <!-- Ссылка для персонала удалена -->
         </div>
     </footer>
 
@@ -469,6 +442,7 @@
         <div class="modal-content">
             <span class="close-btn" id="closeAuth">&times;</span>
             
+            <!-- ЭКРАН ВХОДА / РЕГИСТРАЦИИ -->
             <div id="authSection">
                 <h2>Профиль</h2>
                 <div class="tabs">
@@ -489,6 +463,22 @@
                 </form>
             </div>
 
+            <!-- ЭКРАН ВВОДА КОДА ИЗ СМС -->
+            <div id="smsVerifySection" style="display: none;">
+                <h2 style="margin-bottom: 15px;">Подтверждение</h2>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; line-height: 1.5;">
+                    Мы отправили 4-значный код на номер<br>
+                    <b id="verifyPhoneDisplay" style="color: #fff; font-size: 16px;"></b>
+                </p>
+                <div class="input-group">
+                    <input type="text" id="smsCodeInput" placeholder="0000" maxlength="4" style="text-align: center; font-size: 24px; letter-spacing: 8px; font-weight: bold;">
+                </div>
+                <button class="btn" onclick="verifySmsCode()">Подтвердить</button>
+                <button class="btn" id="resendBtn" onclick="resendCode()" style="background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); margin-top: 15px; transition: 0.3s;" disabled>Отправить снова (60с)</button>
+                <p style="margin-top: 20px; font-size: 13px; color: var(--text-muted); cursor: pointer; text-decoration: underline;" onclick="cancelVerification()">Отменить</p>
+            </div>
+
+            <!-- ЭКРАН ГОСТЯ (Лояльность и Профиль) -->
             <div id="dashboardSection" class="dashboard-content">
                 <div id="loyaltyView" style="display: none;">
                     <h2 style="margin-bottom: 20px;">Ваш QR-код</h2>
@@ -534,23 +524,10 @@
                     <button class="btn" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 15px; width: 100%;" onclick="logout()">Выйти из аккаунта</button>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- АДМИНКА -->
-    <div class="modal" id="adminModal">
-        <div class="modal-content admin-panel">
-            <span class="close-btn" id="closeAdmin">&times;</span>
-            <h2 style="text-align: center;">Панель баристы</h2>
-            
-            <div id="adminAuthSection">
-                <div class="input-group">
-                    <input type="password" id="adminPass" placeholder="Пароль (admin)">
-                </div>
-                <button class="btn" onclick="loginAdmin()">Войти</button>
-            </div>
-            
-            <div id="adminWork" style="display: none;">
+            <!-- ЭКРАН АДМИНИСТРАТОРА (БАРИСТЫ) -->
+            <div id="adminView" class="admin-view">
+                <h2>Панель баристы</h2>
                 <div class="admin-search">
                     <input type="text" id="searchPhone" placeholder="Номер (11 цифр) или Код (6 цифр)" maxlength="18">
                     <button onclick="findUser()">Найти</button>
@@ -576,13 +553,20 @@
                         <button class="btn-redeem" onclick="redeemStreak()" style="display: none; background: var(--fire);" id="redeemStreakBtn">Списать бонус (Стрик)</button>
                     </div>
                 </div>
+
+                <button class="btn" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); margin-top: 25px; width: 100%;" onclick="logout()">Выйти</button>
             </div>
+            
         </div>
     </div>
 
     <script>
+        // Список номеров, которые имеют доступ к админке
+        const ADMIN_PHONES = ["79990000000"];
+
         if (!localStorage.getItem('sudacoffee_db')) {
             const initialDB = {
+                "79990000000": { password: "admin", name: "Бариста", cups: 0, streak: 0, shortCode: "000000", streakReward: null },
                 "79991112233": { password: "123", name: "Иван", cups: 2, streak: 1, shortCode: "123456", streakReward: null }
             };
             localStorage.setItem('sudacoffee_db', JSON.stringify(initialDB));
@@ -608,11 +592,17 @@
             return "Альтернативное молоко";
         }
 
+        let pendingUser = null;
+        let generatedSmsCode = null;
+        let smsTimer = null;
+
         const authModal = document.getElementById('authModal');
         const openAuthBtn = document.getElementById('openAuth');
         const closeAuthBtn = document.getElementById('closeAuth');
         const authSection = document.getElementById('authSection');
+        const smsVerifySection = document.getElementById('smsVerifySection');
         const dashboardSection = document.getElementById('dashboardSection');
+        const adminView = document.getElementById('adminView');
         const qrcodeContainer = document.getElementById('qrcode');
         
         let currentPhone = null;
@@ -620,6 +610,7 @@
         let qrcodeInstance = null;
         let isLoginMode = true;
         let modalMode = 'loyalty'; 
+        let isAdmin = false;
 
         function openModal(mode) {
             modalMode = mode;
@@ -629,13 +620,18 @@
                 showDashboard(); 
             } else {
                 authSection.style.display = 'block';
+                smsVerifySection.style.display = 'none';
                 dashboardSection.classList.remove('active');
+                adminView.classList.remove('active');
             }
         }
 
         openAuthBtn.addEventListener('click', () => openModal('profile'));
         document.getElementById('openLoyaltyFromHero').addEventListener('click', () => openModal('loyalty'));
-        closeAuthBtn.addEventListener('click', () => authModal.classList.remove('active'));
+        closeAuthBtn.addEventListener('click', () => {
+            authModal.classList.remove('active');
+            if(smsTimer) clearInterval(smsTimer);
+        });
 
         function switchTab(mode) {
             const tabs = document.querySelectorAll('.tab');
@@ -660,7 +656,7 @@
             const phone = document.getElementById('phoneInput').value.replace(/\D/g, '');
             
             if (phone.length !== 11) {
-                return alert("Пожалуйста, введите корректный номер телефона (11 цифр). Например: 79991112233");
+                return alert("Пожалуйста, введите корректный номер телефона (11 цифр).");
             }
 
             const pass = document.getElementById('passInput').value;
@@ -668,92 +664,174 @@
             const db = getDB();
 
             if (isLoginMode) {
+                // ВХОД
                 if (!db[phone]) return alert("Гость не найден. Зарегистрируйтесь.");
                 if (db[phone].password !== pass) return alert("Неверный пароль!");
+                
                 currentPhone = phone;
                 currentName = db[phone].name || 'Гость';
+                isAdmin = ADMIN_PHONES.includes(phone);
 
-                if (!db[phone].shortCode) {
-                    db[phone].shortCode = generateUniqueShortCode(db);
-                    saveDB(db);
+                if (!isAdmin) {
+                    if (!db[phone].shortCode) {
+                        db[phone].shortCode = generateUniqueShortCode(db);
+                        saveDB(db);
+                    }
+                    if (db[phone].streak >= 4 && !db[phone].streakReward) {
+                        db[phone].streakReward = getRandomStreakReward();
+                        saveDB(db);
+                    }
                 }
-                if (db[phone].streak >= 4 && !db[phone].streakReward) {
-                    db[phone].streakReward = getRandomStreakReward();
-                    saveDB(db);
-                }
+                
+                openAuthBtn.textContent = currentName;
+                openAuthBtn.classList.add('logged-in');
+                showDashboard(); 
+
             } else {
-                if (pass.length < 4) {
-                    return alert("Пароль должен содержать минимум 4 символа.");
-                }
+                // РЕГИСТРАЦИЯ
+                if (pass.length < 4) return alert("Пароль должен содержать минимум 4 символа.");
                 if (db[phone]) return alert("Этот номер уже зарегистрирован. Войдите.");
                 if (!nameVal) return alert("Введите ваше имя!");
                 
                 const newShortCode = generateUniqueShortCode(db);
+                pendingUser = { phone, password: pass, name: nameVal, cups: 0, streak: 0, shortCode: newShortCode, streakReward: null };
                 
-                db[phone] = { password: pass, name: nameVal, cups: 0, streak: 0, shortCode: newShortCode, streakReward: null };
-                saveDB(db);
-                currentPhone = phone;
-                currentName = nameVal;
+                generatedSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
+                alert(`ДЕМО-РЕЖИМ: Ваш код подтверждения: ${generatedSmsCode}`);
+                
+                authSection.style.display = 'none';
+                document.getElementById('verifyPhoneDisplay').textContent = formatPhone(phone);
+                document.getElementById('smsCodeInput').value = '';
+                smsVerifySection.style.display = 'block';
+                
+                startSmsTimer();
             }
+        }
 
-            openAuthBtn.textContent = currentName;
-            openAuthBtn.classList.add('logged-in');
+        function verifySmsCode() {
+            const inputCode = document.getElementById('smsCodeInput').value.trim();
+            if (inputCode === generatedSmsCode) {
+                const db = getDB();
+                db[pendingUser.phone] = pendingUser;
+                saveDB(db);
+                
+                currentPhone = pendingUser.phone;
+                currentName = pendingUser.name;
+                isAdmin = false;
+                
+                openAuthBtn.textContent = currentName;
+                openAuthBtn.classList.add('logged-in');
+                
+                document.getElementById('loginForm').reset();
+                smsVerifySection.style.display = 'none';
+                authSection.style.display = 'block';
+                clearInterval(smsTimer);
+                pendingUser = null;
+                
+                showDashboard();
+            } else {
+                alert("Неверный код. Попробуйте еще раз.");
+            }
+        }
+
+        function cancelVerification() {
+            pendingUser = null;
+            clearInterval(smsTimer);
+            smsVerifySection.style.display = 'none';
+            authSection.style.display = 'block';
+        }
+
+        function startSmsTimer() {
+            const btn = document.getElementById('resendBtn');
+            let timeLeft = 60;
+            btn.disabled = true;
+            btn.textContent = `Отправить снова (${timeLeft}с)`;
+            btn.style.borderColor = 'var(--text-muted)';
+            btn.style.color = 'var(--text-muted)';
             
-            showDashboard(); 
+            clearInterval(smsTimer);
+            smsTimer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(smsTimer);
+                    btn.disabled = false;
+                    btn.textContent = 'Отправить снова';
+                    btn.style.borderColor = 'var(--accent)';
+                    btn.style.color = 'var(--accent)';
+                } else {
+                    btn.textContent = `Отправить снова (${timeLeft}с)`;
+                }
+            }, 1000);
+        }
+
+        function resendCode() {
+            generatedSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
+            alert(`ДЕМО-РЕЖИМ: Ваш НОВЫЙ код подтверждения: ${generatedSmsCode}`);
+            startSmsTimer();
         }
 
         function showDashboard() {
             authSection.style.display = 'none';
-            dashboardSection.classList.add('active');
-
-            const db = getDB();
-            const user = db[currentPhone];
-
-            if (modalMode === 'loyalty') {
-                document.getElementById('loyaltyView').style.display = 'block';
-                document.getElementById('profileView').style.display = 'none';
-
-                if (qrcodeInstance) qrcodeInstance.clear();
-                qrcodeContainer.innerHTML = ''; 
-                
-                qrcodeInstance = new QRCode(qrcodeContainer, {
-                    text: currentPhone, width: 160, height: 160,
-                    colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H
-                });
-
-                document.getElementById('fallbackCode').textContent = user.shortCode || '000000';
+            smsVerifySection.style.display = 'none';
+            
+            if (isAdmin) {
+                dashboardSection.classList.remove('active');
+                adminView.classList.add('active');
+                document.getElementById('searchPhone').value = '';
+                document.getElementById('userInfo').classList.remove('active');
             } else {
-                document.getElementById('loyaltyView').style.display = 'none';
-                document.getElementById('profileView').style.display = 'block';
+                adminView.classList.remove('active');
+                dashboardSection.classList.add('active');
 
-                document.getElementById('greetingTitle').textContent = `Здравствуйте, ${currentName}!`;
+                const db = getDB();
+                const user = db[currentPhone];
 
-                const cupsContainer = document.getElementById('cupsContainer');
-                cupsContainer.innerHTML = '';
-                for (let i = 0; i < 7; i++) {
-                    const svg = `<svg class="cup-icon ${i < user.cups ? 'filled' : ''}" viewBox="0 0 24 24"><path d="M19,4h-2.1c0-1.1-0.9-2-2-2h-5.8c-1.1,0-2,0.9-2,2H5C4.4,4,4,4.4,4,5v1c0,0.6,0.4,1,1,1h0.6L7,20.6c0,0.2,0.2,0.4,0.4,0.4h9.2c0.2,0,0.4-0.2,0.4-0.4L18.4,7H19c0.6,0,1-0.4,1-1V5C20,4.4,19.6,4,19,4z M13,4h-2V3h2V4z M16.5,19h-9L6.5,7h11L16.5,19z"/></svg>`;
-                    cupsContainer.innerHTML += svg;
-                }
+                if (modalMode === 'loyalty') {
+                    document.getElementById('loyaltyView').style.display = 'block';
+                    document.getElementById('profileView').style.display = 'none';
 
-                document.getElementById('flame1').classList.toggle('active', user.streak >= 1);
-                document.getElementById('flame2').classList.toggle('active', user.streak >= 2);
-                document.getElementById('flame3').classList.toggle('active', user.streak >= 3);
-                document.getElementById('flame4').classList.toggle('active', user.streak >= 4);
-                document.getElementById('streakText').textContent = `${user.streak}/4`;
+                    if (qrcodeInstance) qrcodeInstance.clear();
+                    qrcodeContainer.innerHTML = ''; 
+                    
+                    qrcodeInstance = new QRCode(qrcodeContainer, {
+                        text: currentPhone, width: 160, height: 160,
+                        colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H
+                    });
 
-                const streakRewardBlock = document.getElementById('streakRewardBlock');
-                if (user.streak >= 4 && user.streakReward) {
-                    streakRewardBlock.classList.add('active');
-                    document.getElementById('streakRewardText').textContent = user.streakReward;
+                    document.getElementById('fallbackCode').textContent = user.shortCode || '000000';
                 } else {
-                    streakRewardBlock.classList.remove('active');
-                }
+                    document.getElementById('loyaltyView').style.display = 'none';
+                    document.getElementById('profileView').style.display = 'block';
 
-                const freeDrinkBlock = document.getElementById('freeDrinkBlock');
-                if (user.cups === 7) {
-                    freeDrinkBlock.classList.add('active');
-                } else {
-                    freeDrinkBlock.classList.remove('active');
+                    document.getElementById('greetingTitle').textContent = `Здравствуйте, ${currentName}!`;
+
+                    const cupsContainer = document.getElementById('cupsContainer');
+                    cupsContainer.innerHTML = '';
+                    for (let i = 0; i < 7; i++) {
+                        const svg = `<svg class="cup-icon ${i < user.cups ? 'filled' : ''}" viewBox="0 0 24 24"><path d="M19,4h-2.1c0-1.1-0.9-2-2-2h-5.8c-1.1,0-2,0.9-2,2H5C4.4,4,4,4.4,4,5v1c0,0.6,0.4,1,1,1h0.6L7,20.6c0,0.2,0.2,0.4,0.4,0.4h9.2c0.2,0,0.4-0.2,0.4-0.4L18.4,7H19c0.6,0,1-0.4,1-1V5C20,4.4,19.6,4,19,4z M13,4h-2V3h2V4z M16.5,19h-9L6.5,7h11L16.5,19z"/></svg>`;
+                        cupsContainer.innerHTML += svg;
+                    }
+
+                    document.getElementById('flame1').classList.toggle('active', user.streak >= 1);
+                    document.getElementById('flame2').classList.toggle('active', user.streak >= 2);
+                    document.getElementById('flame3').classList.toggle('active', user.streak >= 3);
+                    document.getElementById('flame4').classList.toggle('active', user.streak >= 4);
+                    document.getElementById('streakText').textContent = `${user.streak}/4`;
+
+                    const streakRewardBlock = document.getElementById('streakRewardBlock');
+                    if (user.streak >= 4 && user.streakReward) {
+                        streakRewardBlock.classList.add('active');
+                        document.getElementById('streakRewardText').textContent = user.streakReward;
+                    } else {
+                        streakRewardBlock.classList.remove('active');
+                    }
+
+                    const freeDrinkBlock = document.getElementById('freeDrinkBlock');
+                    if (user.cups === 7) {
+                        freeDrinkBlock.classList.add('active');
+                    } else {
+                        freeDrinkBlock.classList.remove('active');
+                    }
                 }
             }
         }
@@ -766,12 +844,15 @@
         function logout() {
             currentPhone = null;
             currentName = null;
+            isAdmin = false;
             openAuthBtn.textContent = 'Профиль';
             openAuthBtn.classList.remove('logged-in');
             authModal.classList.remove('active');
             document.getElementById('loginForm').reset();
             authSection.style.display = 'block';
+            smsVerifySection.style.display = 'none';
             dashboardSection.classList.remove('active');
+            adminView.classList.remove('active');
             switchTab('login');
             if (qrcodeInstance) {
                 qrcodeInstance.clear();
@@ -779,19 +860,9 @@
             }
         }
 
-        const adminModal = document.getElementById('adminModal');
-        document.getElementById('openAdminPanel').addEventListener('click', () => adminModal.classList.add('active'));
-        document.getElementById('closeAdmin').addEventListener('click', () => adminModal.classList.remove('active'));
-
-        function loginAdmin() {
-            if (document.getElementById('adminPass').value === 'admin') {
-                document.getElementById('adminAuthSection').style.display = 'none';
-                document.getElementById('adminWork').style.display = 'block';
-            } else {
-                alert('Пароль: admin');
-            }
-        }
-
+        // ==========================================
+        // ЛОГИКА ДЛЯ АДМИНИСТРАТОРА
+        // ==========================================
         let searchedPhone = null;
 
         function findUser() {
@@ -886,7 +957,7 @@
             
             if (user.streak === 4) {
                 user.streakReward = getRandomStreakReward();
-                alert(`Гость приходил 4 дня подряд! Выпал бонус: ${user.streakReward}. Нажмите "Списать бонус (Стрик)" при выдаче.`);
+                alert(`Гость приходил 4 дня подряд! Выпал бонус: ${user.streakReward}.`);
             }
             
             saveDB(db);
