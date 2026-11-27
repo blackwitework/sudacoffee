@@ -433,7 +433,6 @@
         <div class="container">
             <p>© 2026 Кофейня «СЮДА». За вкусным кофе.</p>
             <p style="margin-top: 10px; font-size: 14px; font-weight: 600; color: #fff;">Будни: 7:00–22:00 · Выходные: 8:00–21:00</p>
-            <!-- Ссылка для персонала удалена -->
         </div>
     </footer>
 
@@ -442,7 +441,6 @@
         <div class="modal-content">
             <span class="close-btn" id="closeAuth">&times;</span>
             
-            <!-- ЭКРАН ВХОДА / РЕГИСТРАЦИИ -->
             <div id="authSection">
                 <h2>Профиль</h2>
                 <div class="tabs">
@@ -463,7 +461,6 @@
                 </form>
             </div>
 
-            <!-- ЭКРАН ВВОДА КОДА ИЗ СМС -->
             <div id="smsVerifySection" style="display: none;">
                 <h2 style="margin-bottom: 15px;">Подтверждение</h2>
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; line-height: 1.5;">
@@ -478,7 +475,6 @@
                 <p style="margin-top: 20px; font-size: 13px; color: var(--text-muted); cursor: pointer; text-decoration: underline;" onclick="cancelVerification()">Отменить</p>
             </div>
 
-            <!-- ЭКРАН ГОСТЯ (Лояльность и Профиль) -->
             <div id="dashboardSection" class="dashboard-content">
                 <div id="loyaltyView" style="display: none;">
                     <h2 style="margin-bottom: 20px;">Ваш QR-код</h2>
@@ -525,7 +521,6 @@
                 </div>
             </div>
 
-            <!-- ЭКРАН АДМИНИСТРАТОРА (БАРИСТЫ) -->
             <div id="adminView" class="admin-view">
                 <h2>Панель баристы</h2>
                 <div class="admin-search">
@@ -564,15 +559,25 @@
         // Список номеров, которые имеют доступ к админке
         const ADMIN_PHONES = ["79990000000"];
 
-        if (!localStorage.getItem('sudacoffee_db')) {
-            const initialDB = {
-                "79990000000": { password: "admin", name: "Бариста", cups: 0, streak: 0, shortCode: "000000", streakReward: null },
-                "79991112233": { password: "123", name: "Иван", cups: 2, streak: 1, shortCode: "123456", streakReward: null }
-            };
-            localStorage.setItem('sudacoffee_db', JSON.stringify(initialDB));
+        // Инициализация и ГАРАНТИРОВАННОЕ добавление админа
+        function getDB() { 
+            let db = JSON.parse(localStorage.getItem('sudacoffee_db') || '{}'); 
+            
+            // Если админа нет в базе (например, база старая), принудительно добавляем
+            if (!db["79990000000"]) {
+                db["79990000000"] = { password: "admin", name: "Бариста", cups: 0, streak: 0, shortCode: "000000", streakReward: null };
+                localStorage.setItem('sudacoffee_db', JSON.stringify(db));
+            }
+            
+            // Если тестового гостя нет, добавляем его
+            if (!db["79991112233"]) {
+                db["79991112233"] = { password: "123", name: "Иван", cups: 2, streak: 1, shortCode: "123456", streakReward: null };
+                localStorage.setItem('sudacoffee_db', JSON.stringify(db));
+            }
+            
+            return db; 
         }
-
-        function getDB() { return JSON.parse(localStorage.getItem('sudacoffee_db')); }
+        
         function saveDB(db) { localStorage.setItem('sudacoffee_db', JSON.stringify(db)); }
 
         function generateUniqueShortCode(db) {
